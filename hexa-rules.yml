@@ -1,0 +1,65 @@
+aid: hexa
+name: Hex Rules
+description: >-
+  Operational rules and guardrails for working with the Hex API. Codifies
+  authentication, scope of project and run actions, sharing changes, and
+  write-action policies for agents and integrations.
+modified: '2026-04-28'
+rules:
+  - id: hex-auth-bearer
+    name: Bearer Token Authentication
+    description: >-
+      All requests must include a valid Hex API personal access token via the
+      Authorization header (Bearer scheme). Tokens are workspace-scoped and
+      must never be embedded in source control or logs.
+    applies_to:
+      - hexa:hex-api
+    severity: required
+  - id: hex-run-trigger-confirm
+    name: Confirm Project Run Triggers
+    description: >-
+      Triggering project runs (POST /projects/{projectId}/runs) consumes
+      compute and may execute against production data warehouses. Agents must
+      surface the target project and require explicit confirmation before
+      triggering runs in production workspaces.
+    applies_to:
+      - hexa:hex-api
+    severity: required
+  - id: hex-sharing-changes
+    name: Sharing Changes Require Confirmation
+    description: >-
+      Modifying project sharing (collection, user, group, or workspace
+      sharing) changes who can access analyses and data. Agents must confirm
+      the target audience before granting or revoking access.
+    applies_to:
+      - hexa:hex-api
+    severity: required
+  - id: hex-data-connection-secrets
+    name: Data Connection Secrets
+    description: >-
+      Creating or editing data connections may involve database credentials.
+      Secrets must be passed only via the documented secret fields and must
+      never be echoed in logs or commit history.
+    applies_to:
+      - hexa:hex-api
+    severity: required
+  - id: hex-archive-vs-delete
+    name: Prefer Archive Over Delete
+    description: >-
+      Where the API supports archiving projects, prefer archiving over
+      destructive deletion. Permanent deletion of projects or collections
+      requires explicit user authorization.
+    applies_to:
+      - hexa:hex-api
+    severity: recommended
+  - id: hex-pagination
+    name: Use Pagination
+    description: >-
+      List endpoints return paginated results. Honor pagination parameters
+      and continuation tokens rather than assuming a single page response.
+    applies_to:
+      - hexa:hex-api
+    severity: recommended
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
