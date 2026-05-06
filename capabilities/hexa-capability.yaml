@@ -1,0 +1,2262 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Hex API
+  description: API specification for the Hex External API
+  tags:
+  - Hexa
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: hexa
+    baseUri: https://app.hex.tech/api
+    description: Hex API HTTP API.
+    authentication:
+      type: bearer
+      token: '{{HEXA_TOKEN}}'
+    resources:
+    - name: v1-embedding-createpresignedurl-projectid
+      path: /v1/embedding/createPresignedUrl/{projectId}
+      operations:
+      - name: createpresignedurl
+        method: POST
+        description: Create an embedded url for a project
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-projects
+      path: /v1/projects
+      operations:
+      - name: createproject
+        method: POST
+        description: Create a new project. Creates a new project in the workspace with the specified title. Optionally provide
+          a description and project language.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: listprojects
+        method: GET
+        description: List all viewable projects, sorted by most recently created first.
+        inputParameters:
+        - name: includeArchived
+          in: query
+          type: boolean
+        - name: includeComponents
+          in: query
+          type: boolean
+        - name: includeTrashed
+          in: query
+          type: boolean
+        - name: includeSharing
+          in: query
+          type: boolean
+        - name: statuses
+          in: query
+          type: array
+        - name: categories
+          in: query
+          type: array
+        - name: creatorEmail
+          in: query
+          type: string
+        - name: ownerEmail
+          in: query
+          type: string
+        - name: collectionId
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: string
+        - name: after
+          in: query
+          type: string
+        - name: before
+          in: query
+          type: string
+        - name: sortBy
+          in: query
+          type: string
+        - name: sortDirection
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-projects-projectid
+      path: /v1/projects/{projectId}
+      operations:
+      - name: getproject
+        method: GET
+        description: Get metadata about a single project.
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        - name: includeSharing
+          in: query
+          type: boolean
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateproject
+        method: PATCH
+        description: Use this endpoint to add or remove a status (including endorsements) from a project
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-projects-projectid-queriedtables
+      path: /v1/projects/{projectId}/queriedTables
+      operations:
+      - name: getqueriedtables
+        method: GET
+        description: Given a project ID, return the list of warehouse tables queried in the project.
+        inputParameters:
+        - name: limit
+          in: query
+          type: string
+        - name: after
+          in: query
+          type: string
+        - name: before
+          in: query
+          type: string
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-projects-projectid-sharing-collections
+      path: /v1/projects/{projectId}/sharing/collections
+      operations:
+      - name: editprojectsharingcollections
+        method: PATCH
+        description: Add a project to collections or remove it from collections. For projects, use `CAN_VIEW` to grant the
+          UI permission labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app". Workspace
+          tokens calling this endpo
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-projects-projectid-sharing-workspaceandpublic
+      path: /v1/projects/{projectId}/sharing/workspaceAndPublic
+      operations:
+      - name: editprojectsharingorgandpublic
+        method: PATCH
+        description: Update workspace or public-web sharing for a project. For projects, use `CAN_VIEW` to grant the UI permission
+          labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app".
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-projects-projectid-sharing-groups
+      path: /v1/projects/{projectId}/sharing/groups
+      operations:
+      - name: editprojectsharinggroups
+        method: PATCH
+        description: Add groups to a project or update/remove their project sharing access. For projects, use `CAN_VIEW` to
+          grant the UI permission labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app".
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-projects-projectid-sharing-users
+      path: /v1/projects/{projectId}/sharing/users
+      operations:
+      - name: editprojectsharingusers
+        method: PATCH
+        description: Add users to a project or update/remove their project sharing access. For projects, use `CAN_VIEW` to
+          grant the UI permission labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app".
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-semantic-projects-models-semanticprojectid-in
+      path: /v1/semantic-(projects|models)/{semanticProjectId}/ingest
+      operations:
+      - name: ingestsemanticproject
+        method: POST
+        description: Ingest a semantic project from a zip file. This API endpoint is subject to a maximum of 3 requests per
+          minute.
+        inputParameters:
+        - name: semanticProjectId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-semantic-projects-models-semanticprojectid
+      path: /v1/semantic-(projects|models)/{semanticProjectId}
+      operations:
+      - name: updatesemanticproject
+        method: PATCH
+        description: Use this endpoint to add or remove a status (including endorsements) from datasets and views within a
+          semantic project This endpoint uses atomic semantics - if any update in the batch fails validation, the entire request
+          fails and no change
+        inputParameters:
+        - name: semanticProjectId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-projects-projectid-runs
+      path: /v1/projects/{projectId}/runs
+      operations:
+      - name: runproject
+        method: POST
+        description: Trigger a run of the latest published version of a project. This API endpoint is subject to a maximum
+          of 20 requests per minute and 60 requests per hour.
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        - name: flag-config-override
+          in: header
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getprojectruns
+        method: GET
+        description: Get the status of runs of a project. By default, all run types are returned (API-triggered, scheduled,
+          and publish/refresh runs). Use the `runTriggerFilter` parameter to filter to a specific type.
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        - name: limit
+          in: query
+          type: string
+        - name: offset
+          in: query
+          type: string
+        - name: statusFilter
+          in: query
+          type: string
+        - name: runTriggerFilter
+          in: query
+          type: string
+          description: 'Filter by how the run was triggered Valid values: `API`, `SCHEDULED`, `APP_REFRESH`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-projects-projectid-runs-runid
+      path: /v1/projects/{projectId}/runs/{runId}
+      operations:
+      - name: getrunstatus
+        method: GET
+        description: Get the status of a project run.
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        - name: runId
+          in: path
+          type: string
+          required: true
+        - name: enable-expanded-stats
+          in: header
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: cancelrun
+        method: DELETE
+        description: Cancel a project run.
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        - name: runId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-projects-projectid-runs-runid-cells-staticid-
+      path: /v1/projects/{projectId}/runs/{runId}/cells/{staticId}/image
+      operations:
+      - name: getchartimagefromrun
+        method: GET
+        description: Get the rendered PNG image of a chart cell from a completed run by staticCellId. The "staticId" path
+          parameter should be the cell's staticId (which remains stable across project versions), as opposed to its cellId
+          (which is scoped to a spec
+        inputParameters:
+        - name: projectId
+          in: path
+          type: string
+          required: true
+        - name: runId
+          in: path
+          type: string
+          required: true
+        - name: staticId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-groups-groupid
+      path: /v1/groups/{groupId}
+      operations:
+      - name: getgroup
+        method: GET
+        description: GET /v1/groups/{groupId}
+        inputParameters:
+        - name: groupId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletegroup
+        method: DELETE
+        description: DELETE /v1/groups/{groupId}
+        inputParameters:
+        - name: groupId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: editgroup
+        method: PATCH
+        description: PATCH /v1/groups/{groupId}
+        inputParameters:
+        - name: groupId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-groups
+      path: /v1/groups
+      operations:
+      - name: listgroups
+        method: GET
+        description: GET /v1/groups
+        inputParameters:
+        - name: after
+          in: query
+          type: string
+        - name: before
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: string
+        - name: sortBy
+          in: query
+          type: string
+        - name: sortDirection
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: creategroup
+        method: POST
+        description: POST /v1/groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-data-connections-dataconnectionid
+      path: /v1/data-connections/{dataConnectionId}
+      operations:
+      - name: getdataconnection
+        method: GET
+        description: GET /v1/data-connections/{dataConnectionId}
+        inputParameters:
+        - name: dataConnectionId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: editdataconnection
+        method: PATCH
+        description: PATCH /v1/data-connections/{dataConnectionId}
+        inputParameters:
+        - name: dataConnectionId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-data-connections
+      path: /v1/data-connections
+      operations:
+      - name: listdataconnections
+        method: GET
+        description: GET /v1/data-connections
+        inputParameters:
+        - name: after
+          in: query
+          type: string
+        - name: before
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: string
+        - name: sortBy
+          in: query
+          type: string
+        - name: sortDirection
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createdataconnection
+        method: POST
+        description: POST /v1/data-connections
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-data-connections-dataconnectionid-schema
+      path: /v1/data-connections/{dataConnectionId}/schema
+      operations:
+      - name: updatedataconnectionschema
+        method: PATCH
+        description: Use this endpoint to add or remove a status (including endorsements) from databases, schemas, and tables
+          within a data connection This endpoint uses atomic semantics - if any update in the batch fails validation, the
+          entire request fails an
+        inputParameters:
+        - name: dataConnectionId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-users-me
+      path: /v1/users/me
+      operations:
+      - name: me
+        method: GET
+        description: GET /v1/users/me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-users
+      path: /v1/users
+      operations:
+      - name: listusers
+        method: GET
+        description: GET /v1/users
+        inputParameters:
+        - name: after
+          in: query
+          type: string
+        - name: before
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: string
+        - name: sortBy
+          in: query
+          type: string
+        - name: sortDirection
+          in: query
+          type: string
+        - name: groupId
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-users-userid-deactivate
+      path: /v1/users/{userId}/deactivate
+      operations:
+      - name: deactivateuser
+        method: POST
+        description: POST /v1/users/{userId}/deactivate
+        inputParameters:
+        - name: userId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-collections-collectionid
+      path: /v1/collections/{collectionId}
+      operations:
+      - name: getcollection
+        method: GET
+        description: GET /v1/collections/{collectionId}
+        inputParameters:
+        - name: collectionId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: editcollection
+        method: PATCH
+        description: PATCH /v1/collections/{collectionId}
+        inputParameters:
+        - name: collectionId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-collections
+      path: /v1/collections
+      operations:
+      - name: listcollections
+        method: GET
+        description: GET /v1/collections
+        inputParameters:
+        - name: after
+          in: query
+          type: string
+        - name: before
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: string
+        - name: sortBy
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcollection
+        method: POST
+        description: POST /v1/collections
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-guides-draft-list
+      path: /v1/guides/draft/list
+      operations:
+      - name: listdraftguides
+        method: GET
+        description: GET /v1/guides/draft/list
+        inputParameters:
+        - name: limit
+          in: query
+          type: string
+        - name: after
+          in: query
+          type: string
+        - name: before
+          in: query
+          type: string
+        - name: externalSource
+          in: query
+          type: string
+          description: 'A JSON stringified, URI encoded external source locator example: encodeURIComponent(JSON.stringify({"source":"github","owner":"my-org","repo":"my-repo","baseUrl'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-guides-draft
+      path: /v1/guides/draft
+      operations:
+      - name: upsertguidedraft
+        method: PUT
+        description: 'Update or create guide drafts by filePath. Accepts a dictionary mapping file paths to their contents.
+          For each file: - If the guide doesn''t exist, it will be created. - If the guide exists but has no draft, a new
+          draft will be created. - If'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-guides-publish
+      path: /v1/guides/publish
+      operations:
+      - name: publishguidedrafts
+        method: POST
+        description: Publish all currently drafted guides.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-guides-draft-orgguidefileid
+      path: /v1/guides/draft/{orgGuideFileId}
+      operations:
+      - name: deleteguidedraft
+        method: DELETE
+        description: DELETE /v1/guides/draft/{orgGuideFileId}
+        inputParameters:
+        - name: orgGuideFileId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-cells
+      path: /v1/cells
+      operations:
+      - name: listcells
+        method: GET
+        description: List all cells Returns cells from the draft version of the project only, not the published app. Requires
+          a project id for filtering. For SQL and CODE cells, includes the source code content.
+        inputParameters:
+        - name: projectId
+          in: query
+          type: string
+          required: true
+        - name: limit
+          in: query
+          type: string
+        - name: after
+          in: query
+          type: string
+        - name: before
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcell
+        method: POST
+        description: Create a new cell Creates a new cell in the draft version of a project. Currently only CODE and SQL cell
+          types are supported. Requires EDIT_PROJECT_CONTENTS permission on the project.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-cells-cellid
+      path: /v1/cells/{cellId}
+      operations:
+      - name: getcell
+        method: GET
+        description: Get a single cell by ID Returns cells from the draft version of the project only, not the published app.
+          Returns the cell details including id, staticId, cellType, label, dataConnectionId, source contents (for CODE and
+          SQL cells), and proje
+        inputParameters:
+        - name: cellId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatecell
+        method: PATCH
+        description: 'Update a cell''s source and/or data connection Updates the source code and/or data connection ID for
+          a cell. For SQL cells, can update SQL source and data connection ID. For code cells, can update code source. Requires
+          EDIT_PROJECT_CONTENTS '
+        inputParameters:
+        - name: cellId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletecell
+        method: DELETE
+        description: Delete a cell Permanently deletes a cell from the draft version of a project. Requires EDIT_PROJECT_CONTENTS
+          permission on the project containing the cell.
+        inputParameters:
+        - name: cellId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-cells-cellid-image
+      path: /v1/cells/{cellId}/image
+      operations:
+      - name: getchartimagefromlogic
+        method: GET
+        description: Get the rendered PNG image of a chart cell from the current notebook session by cellId. The "cellId"
+          path parameter should be the cell's ID (scoped to a specific version), as opposed to its staticId (which remains
+          stable across versions). R
+        inputParameters:
+        - name: cellId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: hexa-rest
+    description: REST adapter for Hex API.
+    resources:
+    - path: /v1/embedding/createPresignedUrl/{projectId}
+      name: createpresignedurl
+      operations:
+      - method: POST
+        name: createpresignedurl
+        description: Create an embedded url for a project
+        call: hexa.createpresignedurl
+        with:
+          projectId: rest.projectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects
+      name: createproject
+      operations:
+      - method: POST
+        name: createproject
+        description: Create a new project. Creates a new project in the workspace with the specified title. Optionally provide
+          a description and project language.
+        call: hexa.createproject
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects
+      name: listprojects
+      operations:
+      - method: GET
+        name: listprojects
+        description: List all viewable projects, sorted by most recently created first.
+        call: hexa.listprojects
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}
+      name: getproject
+      operations:
+      - method: GET
+        name: getproject
+        description: Get metadata about a single project.
+        call: hexa.getproject
+        with:
+          projectId: rest.projectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}
+      name: updateproject
+      operations:
+      - method: PATCH
+        name: updateproject
+        description: Use this endpoint to add or remove a status (including endorsements) from a project
+        call: hexa.updateproject
+        with:
+          projectId: rest.projectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}/queriedTables
+      name: getqueriedtables
+      operations:
+      - method: GET
+        name: getqueriedtables
+        description: Given a project ID, return the list of warehouse tables queried in the project.
+        call: hexa.getqueriedtables
+        with:
+          projectId: rest.projectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}/sharing/collections
+      name: editprojectsharingcollections
+      operations:
+      - method: PATCH
+        name: editprojectsharingcollections
+        description: Add a project to collections or remove it from collections. For projects, use `CAN_VIEW` to grant the
+          UI permission labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app". Workspace
+          tokens calling this endpo
+        call: hexa.editprojectsharingcollections
+        with:
+          projectId: rest.projectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}/sharing/workspaceAndPublic
+      name: editprojectsharingorgandpublic
+      operations:
+      - method: PATCH
+        name: editprojectsharingorgandpublic
+        description: Update workspace or public-web sharing for a project. For projects, use `CAN_VIEW` to grant the UI permission
+          labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app".
+        call: hexa.editprojectsharingorgandpublic
+        with:
+          projectId: rest.projectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}/sharing/groups
+      name: editprojectsharinggroups
+      operations:
+      - method: PATCH
+        name: editprojectsharinggroups
+        description: Add groups to a project or update/remove their project sharing access. For projects, use `CAN_VIEW` to
+          grant the UI permission labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app".
+        call: hexa.editprojectsharinggroups
+        with:
+          projectId: rest.projectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}/sharing/users
+      name: editprojectsharingusers
+      operations:
+      - method: PATCH
+        name: editprojectsharingusers
+        description: Add users to a project or update/remove their project sharing access. For projects, use `CAN_VIEW` to
+          grant the UI permission labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app".
+        call: hexa.editprojectsharingusers
+        with:
+          projectId: rest.projectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/semantic-(projects|models)/{semanticProjectId}/ingest
+      name: ingestsemanticproject
+      operations:
+      - method: POST
+        name: ingestsemanticproject
+        description: Ingest a semantic project from a zip file. This API endpoint is subject to a maximum of 3 requests per
+          minute.
+        call: hexa.ingestsemanticproject
+        with:
+          semanticProjectId: rest.semanticProjectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/semantic-(projects|models)/{semanticProjectId}
+      name: updatesemanticproject
+      operations:
+      - method: PATCH
+        name: updatesemanticproject
+        description: Use this endpoint to add or remove a status (including endorsements) from datasets and views within a
+          semantic project This endpoint uses atomic semantics - if any update in the batch fails validation, the entire request
+          fails and no change
+        call: hexa.updatesemanticproject
+        with:
+          semanticProjectId: rest.semanticProjectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}/runs
+      name: runproject
+      operations:
+      - method: POST
+        name: runproject
+        description: Trigger a run of the latest published version of a project. This API endpoint is subject to a maximum
+          of 20 requests per minute and 60 requests per hour.
+        call: hexa.runproject
+        with:
+          projectId: rest.projectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}/runs
+      name: getprojectruns
+      operations:
+      - method: GET
+        name: getprojectruns
+        description: Get the status of runs of a project. By default, all run types are returned (API-triggered, scheduled,
+          and publish/refresh runs). Use the `runTriggerFilter` parameter to filter to a specific type.
+        call: hexa.getprojectruns
+        with:
+          projectId: rest.projectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}/runs/{runId}
+      name: getrunstatus
+      operations:
+      - method: GET
+        name: getrunstatus
+        description: Get the status of a project run.
+        call: hexa.getrunstatus
+        with:
+          projectId: rest.projectId
+          runId: rest.runId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}/runs/{runId}
+      name: cancelrun
+      operations:
+      - method: DELETE
+        name: cancelrun
+        description: Cancel a project run.
+        call: hexa.cancelrun
+        with:
+          projectId: rest.projectId
+          runId: rest.runId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{projectId}/runs/{runId}/cells/{staticId}/image
+      name: getchartimagefromrun
+      operations:
+      - method: GET
+        name: getchartimagefromrun
+        description: Get the rendered PNG image of a chart cell from a completed run by staticCellId. The "staticId" path
+          parameter should be the cell's staticId (which remains stable across project versions), as opposed to its cellId
+          (which is scoped to a spec
+        call: hexa.getchartimagefromrun
+        with:
+          projectId: rest.projectId
+          runId: rest.runId
+          staticId: rest.staticId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{groupId}
+      name: getgroup
+      operations:
+      - method: GET
+        name: getgroup
+        description: GET /v1/groups/{groupId}
+        call: hexa.getgroup
+        with:
+          groupId: rest.groupId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{groupId}
+      name: deletegroup
+      operations:
+      - method: DELETE
+        name: deletegroup
+        description: DELETE /v1/groups/{groupId}
+        call: hexa.deletegroup
+        with:
+          groupId: rest.groupId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{groupId}
+      name: editgroup
+      operations:
+      - method: PATCH
+        name: editgroup
+        description: PATCH /v1/groups/{groupId}
+        call: hexa.editgroup
+        with:
+          groupId: rest.groupId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups
+      name: listgroups
+      operations:
+      - method: GET
+        name: listgroups
+        description: GET /v1/groups
+        call: hexa.listgroups
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups
+      name: creategroup
+      operations:
+      - method: POST
+        name: creategroup
+        description: POST /v1/groups
+        call: hexa.creategroup
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/data-connections/{dataConnectionId}
+      name: getdataconnection
+      operations:
+      - method: GET
+        name: getdataconnection
+        description: GET /v1/data-connections/{dataConnectionId}
+        call: hexa.getdataconnection
+        with:
+          dataConnectionId: rest.dataConnectionId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/data-connections/{dataConnectionId}
+      name: editdataconnection
+      operations:
+      - method: PATCH
+        name: editdataconnection
+        description: PATCH /v1/data-connections/{dataConnectionId}
+        call: hexa.editdataconnection
+        with:
+          dataConnectionId: rest.dataConnectionId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/data-connections
+      name: listdataconnections
+      operations:
+      - method: GET
+        name: listdataconnections
+        description: GET /v1/data-connections
+        call: hexa.listdataconnections
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/data-connections
+      name: createdataconnection
+      operations:
+      - method: POST
+        name: createdataconnection
+        description: POST /v1/data-connections
+        call: hexa.createdataconnection
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/data-connections/{dataConnectionId}/schema
+      name: updatedataconnectionschema
+      operations:
+      - method: PATCH
+        name: updatedataconnectionschema
+        description: Use this endpoint to add or remove a status (including endorsements) from databases, schemas, and tables
+          within a data connection This endpoint uses atomic semantics - if any update in the batch fails validation, the
+          entire request fails an
+        call: hexa.updatedataconnectionschema
+        with:
+          dataConnectionId: rest.dataConnectionId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/me
+      name: me
+      operations:
+      - method: GET
+        name: me
+        description: GET /v1/users/me
+        call: hexa.me
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users
+      name: listusers
+      operations:
+      - method: GET
+        name: listusers
+        description: GET /v1/users
+        call: hexa.listusers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{userId}/deactivate
+      name: deactivateuser
+      operations:
+      - method: POST
+        name: deactivateuser
+        description: POST /v1/users/{userId}/deactivate
+        call: hexa.deactivateuser
+        with:
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/collections/{collectionId}
+      name: getcollection
+      operations:
+      - method: GET
+        name: getcollection
+        description: GET /v1/collections/{collectionId}
+        call: hexa.getcollection
+        with:
+          collectionId: rest.collectionId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/collections/{collectionId}
+      name: editcollection
+      operations:
+      - method: PATCH
+        name: editcollection
+        description: PATCH /v1/collections/{collectionId}
+        call: hexa.editcollection
+        with:
+          collectionId: rest.collectionId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/collections
+      name: listcollections
+      operations:
+      - method: GET
+        name: listcollections
+        description: GET /v1/collections
+        call: hexa.listcollections
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/collections
+      name: createcollection
+      operations:
+      - method: POST
+        name: createcollection
+        description: POST /v1/collections
+        call: hexa.createcollection
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/guides/draft/list
+      name: listdraftguides
+      operations:
+      - method: GET
+        name: listdraftguides
+        description: GET /v1/guides/draft/list
+        call: hexa.listdraftguides
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/guides/draft
+      name: upsertguidedraft
+      operations:
+      - method: PUT
+        name: upsertguidedraft
+        description: 'Update or create guide drafts by filePath. Accepts a dictionary mapping file paths to their contents.
+          For each file: - If the guide doesn''t exist, it will be created. - If the guide exists but has no draft, a new
+          draft will be created. - If'
+        call: hexa.upsertguidedraft
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/guides/publish
+      name: publishguidedrafts
+      operations:
+      - method: POST
+        name: publishguidedrafts
+        description: Publish all currently drafted guides.
+        call: hexa.publishguidedrafts
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/guides/draft/{orgGuideFileId}
+      name: deleteguidedraft
+      operations:
+      - method: DELETE
+        name: deleteguidedraft
+        description: DELETE /v1/guides/draft/{orgGuideFileId}
+        call: hexa.deleteguidedraft
+        with:
+          orgGuideFileId: rest.orgGuideFileId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cells
+      name: listcells
+      operations:
+      - method: GET
+        name: listcells
+        description: List all cells Returns cells from the draft version of the project only, not the published app. Requires
+          a project id for filtering. For SQL and CODE cells, includes the source code content.
+        call: hexa.listcells
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cells
+      name: createcell
+      operations:
+      - method: POST
+        name: createcell
+        description: Create a new cell Creates a new cell in the draft version of a project. Currently only CODE and SQL cell
+          types are supported. Requires EDIT_PROJECT_CONTENTS permission on the project.
+        call: hexa.createcell
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cells/{cellId}
+      name: getcell
+      operations:
+      - method: GET
+        name: getcell
+        description: Get a single cell by ID Returns cells from the draft version of the project only, not the published app.
+          Returns the cell details including id, staticId, cellType, label, dataConnectionId, source contents (for CODE and
+          SQL cells), and proje
+        call: hexa.getcell
+        with:
+          cellId: rest.cellId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cells/{cellId}
+      name: updatecell
+      operations:
+      - method: PATCH
+        name: updatecell
+        description: 'Update a cell''s source and/or data connection Updates the source code and/or data connection ID for
+          a cell. For SQL cells, can update SQL source and data connection ID. For code cells, can update code source. Requires
+          EDIT_PROJECT_CONTENTS '
+        call: hexa.updatecell
+        with:
+          cellId: rest.cellId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cells/{cellId}
+      name: deletecell
+      operations:
+      - method: DELETE
+        name: deletecell
+        description: Delete a cell Permanently deletes a cell from the draft version of a project. Requires EDIT_PROJECT_CONTENTS
+          permission on the project containing the cell.
+        call: hexa.deletecell
+        with:
+          cellId: rest.cellId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cells/{cellId}/image
+      name: getchartimagefromlogic
+      operations:
+      - method: GET
+        name: getchartimagefromlogic
+        description: Get the rendered PNG image of a chart cell from the current notebook session by cellId. The "cellId"
+          path parameter should be the cell's ID (scoped to a specific version), as opposed to its staticId (which remains
+          stable across versions). R
+        call: hexa.getchartimagefromlogic
+        with:
+          cellId: rest.cellId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: hexa-mcp
+    transport: http
+    description: MCP adapter for Hex API for AI agent use.
+    tools:
+    - name: createpresignedurl
+      description: Create an embedded url for a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.createpresignedurl
+      with:
+        projectId: tools.projectId
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createproject
+      description: Create a new project. Creates a new project in the workspace with the specified title. Optionally provide
+        a description and project language.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.createproject
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listprojects
+      description: List all viewable projects, sorted by most recently created first.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.listprojects
+      with:
+        includeArchived: tools.includeArchived
+        includeComponents: tools.includeComponents
+        includeTrashed: tools.includeTrashed
+        includeSharing: tools.includeSharing
+        statuses: tools.statuses
+        categories: tools.categories
+        creatorEmail: tools.creatorEmail
+        ownerEmail: tools.ownerEmail
+        collectionId: tools.collectionId
+        limit: tools.limit
+        after: tools.after
+        before: tools.before
+        sortBy: tools.sortBy
+        sortDirection: tools.sortDirection
+      inputParameters:
+      - name: includeArchived
+        type: boolean
+        description: includeArchived
+      - name: includeComponents
+        type: boolean
+        description: includeComponents
+      - name: includeTrashed
+        type: boolean
+        description: includeTrashed
+      - name: includeSharing
+        type: boolean
+        description: includeSharing
+      - name: statuses
+        type: array
+        description: statuses
+      - name: categories
+        type: array
+        description: categories
+      - name: creatorEmail
+        type: string
+        description: creatorEmail
+      - name: ownerEmail
+        type: string
+        description: ownerEmail
+      - name: collectionId
+        type: string
+        description: collectionId
+      - name: limit
+        type: string
+        description: limit
+      - name: after
+        type: string
+        description: after
+      - name: before
+        type: string
+        description: before
+      - name: sortBy
+        type: string
+        description: sortBy
+      - name: sortDirection
+        type: string
+        description: sortDirection
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getproject
+      description: Get metadata about a single project.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.getproject
+      with:
+        projectId: tools.projectId
+        includeSharing: tools.includeSharing
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      - name: includeSharing
+        type: boolean
+        description: includeSharing
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateproject
+      description: Use this endpoint to add or remove a status (including endorsements) from a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.updateproject
+      with:
+        projectId: tools.projectId
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getqueriedtables
+      description: Given a project ID, return the list of warehouse tables queried in the project.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.getqueriedtables
+      with:
+        projectId: tools.projectId
+        limit: tools.limit
+        after: tools.after
+        before: tools.before
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      - name: limit
+        type: string
+        description: limit
+      - name: after
+        type: string
+        description: after
+      - name: before
+        type: string
+        description: before
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: editprojectsharingcollections
+      description: Add a project to collections or remove it from collections. For projects, use `CAN_VIEW` to grant the UI
+        permission labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app". Workspace tokens
+        calling this endpo
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.editprojectsharingcollections
+      with:
+        projectId: tools.projectId
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: editprojectsharingorgandpublic
+      description: Update workspace or public-web sharing for a project. For projects, use `CAN_VIEW` to grant the UI permission
+        labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app".
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.editprojectsharingorgandpublic
+      with:
+        projectId: tools.projectId
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: editprojectsharinggroups
+      description: Add groups to a project or update/remove their project sharing access. For projects, use `CAN_VIEW` to
+        grant the UI permission labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app".
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.editprojectsharinggroups
+      with:
+        projectId: tools.projectId
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: editprojectsharingusers
+      description: Add users to a project or update/remove their project sharing access. For projects, use `CAN_VIEW` to grant
+        the UI permission labeled "Can explore". Use `APP_ONLY` to grant the UI permission labeled "Can view app".
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.editprojectsharingusers
+      with:
+        projectId: tools.projectId
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ingestsemanticproject
+      description: Ingest a semantic project from a zip file. This API endpoint is subject to a maximum of 3 requests per
+        minute.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.ingestsemanticproject
+      with:
+        semanticProjectId: tools.semanticProjectId
+      inputParameters:
+      - name: semanticProjectId
+        type: string
+        description: semanticProjectId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatesemanticproject
+      description: Use this endpoint to add or remove a status (including endorsements) from datasets and views within a semantic
+        project This endpoint uses atomic semantics - if any update in the batch fails validation, the entire request fails
+        and no change
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.updatesemanticproject
+      with:
+        semanticProjectId: tools.semanticProjectId
+      inputParameters:
+      - name: semanticProjectId
+        type: string
+        description: semanticProjectId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runproject
+      description: Trigger a run of the latest published version of a project. This API endpoint is subject to a maximum of
+        20 requests per minute and 60 requests per hour.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.runproject
+      with:
+        projectId: tools.projectId
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getprojectruns
+      description: Get the status of runs of a project. By default, all run types are returned (API-triggered, scheduled,
+        and publish/refresh runs). Use the `runTriggerFilter` parameter to filter to a specific type.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.getprojectruns
+      with:
+        projectId: tools.projectId
+        limit: tools.limit
+        offset: tools.offset
+        statusFilter: tools.statusFilter
+        runTriggerFilter: tools.runTriggerFilter
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      - name: limit
+        type: string
+        description: limit
+      - name: offset
+        type: string
+        description: offset
+      - name: statusFilter
+        type: string
+        description: statusFilter
+      - name: runTriggerFilter
+        type: string
+        description: 'Filter by how the run was triggered Valid values: `API`, `SCHEDULED`, `APP_REFRESH`'
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getrunstatus
+      description: Get the status of a project run.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.getrunstatus
+      with:
+        projectId: tools.projectId
+        runId: tools.runId
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      - name: runId
+        type: string
+        description: runId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cancelrun
+      description: Cancel a project run.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: hexa.cancelrun
+      with:
+        projectId: tools.projectId
+        runId: tools.runId
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      - name: runId
+        type: string
+        description: runId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getchartimagefromrun
+      description: Get the rendered PNG image of a chart cell from a completed run by staticCellId. The "staticId" path parameter
+        should be the cell's staticId (which remains stable across project versions), as opposed to its cellId (which is scoped
+        to a spec
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.getchartimagefromrun
+      with:
+        projectId: tools.projectId
+        runId: tools.runId
+        staticId: tools.staticId
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      - name: runId
+        type: string
+        description: runId
+        required: true
+      - name: staticId
+        type: string
+        description: staticId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getgroup
+      description: GET /v1/groups/{groupId}
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.getgroup
+      with:
+        groupId: tools.groupId
+      inputParameters:
+      - name: groupId
+        type: string
+        description: groupId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletegroup
+      description: DELETE /v1/groups/{groupId}
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: hexa.deletegroup
+      with:
+        groupId: tools.groupId
+      inputParameters:
+      - name: groupId
+        type: string
+        description: groupId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: editgroup
+      description: PATCH /v1/groups/{groupId}
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.editgroup
+      with:
+        groupId: tools.groupId
+      inputParameters:
+      - name: groupId
+        type: string
+        description: groupId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listgroups
+      description: GET /v1/groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.listgroups
+      with:
+        after: tools.after
+        before: tools.before
+        limit: tools.limit
+        sortBy: tools.sortBy
+        sortDirection: tools.sortDirection
+      inputParameters:
+      - name: after
+        type: string
+        description: after
+      - name: before
+        type: string
+        description: before
+      - name: limit
+        type: string
+        description: limit
+      - name: sortBy
+        type: string
+        description: sortBy
+      - name: sortDirection
+        type: string
+        description: sortDirection
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: creategroup
+      description: POST /v1/groups
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.creategroup
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getdataconnection
+      description: GET /v1/data-connections/{dataConnectionId}
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.getdataconnection
+      with:
+        dataConnectionId: tools.dataConnectionId
+      inputParameters:
+      - name: dataConnectionId
+        type: string
+        description: dataConnectionId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: editdataconnection
+      description: PATCH /v1/data-connections/{dataConnectionId}
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.editdataconnection
+      with:
+        dataConnectionId: tools.dataConnectionId
+      inputParameters:
+      - name: dataConnectionId
+        type: string
+        description: dataConnectionId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listdataconnections
+      description: GET /v1/data-connections
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.listdataconnections
+      with:
+        after: tools.after
+        before: tools.before
+        limit: tools.limit
+        sortBy: tools.sortBy
+        sortDirection: tools.sortDirection
+      inputParameters:
+      - name: after
+        type: string
+        description: after
+      - name: before
+        type: string
+        description: before
+      - name: limit
+        type: string
+        description: limit
+      - name: sortBy
+        type: string
+        description: sortBy
+      - name: sortDirection
+        type: string
+        description: sortDirection
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createdataconnection
+      description: POST /v1/data-connections
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.createdataconnection
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatedataconnectionschema
+      description: Use this endpoint to add or remove a status (including endorsements) from databases, schemas, and tables
+        within a data connection This endpoint uses atomic semantics - if any update in the batch fails validation, the entire
+        request fails an
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.updatedataconnectionschema
+      with:
+        dataConnectionId: tools.dataConnectionId
+      inputParameters:
+      - name: dataConnectionId
+        type: string
+        description: dataConnectionId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: me
+      description: GET /v1/users/me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.me
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listusers
+      description: GET /v1/users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.listusers
+      with:
+        after: tools.after
+        before: tools.before
+        limit: tools.limit
+        sortBy: tools.sortBy
+        sortDirection: tools.sortDirection
+        groupId: tools.groupId
+      inputParameters:
+      - name: after
+        type: string
+        description: after
+      - name: before
+        type: string
+        description: before
+      - name: limit
+        type: string
+        description: limit
+      - name: sortBy
+        type: string
+        description: sortBy
+      - name: sortDirection
+        type: string
+        description: sortDirection
+      - name: groupId
+        type: string
+        description: groupId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deactivateuser
+      description: POST /v1/users/{userId}/deactivate
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.deactivateuser
+      with:
+        userId: tools.userId
+      inputParameters:
+      - name: userId
+        type: string
+        description: userId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getcollection
+      description: GET /v1/collections/{collectionId}
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.getcollection
+      with:
+        collectionId: tools.collectionId
+      inputParameters:
+      - name: collectionId
+        type: string
+        description: collectionId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: editcollection
+      description: PATCH /v1/collections/{collectionId}
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.editcollection
+      with:
+        collectionId: tools.collectionId
+      inputParameters:
+      - name: collectionId
+        type: string
+        description: collectionId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listcollections
+      description: GET /v1/collections
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.listcollections
+      with:
+        after: tools.after
+        before: tools.before
+        limit: tools.limit
+        sortBy: tools.sortBy
+      inputParameters:
+      - name: after
+        type: string
+        description: after
+      - name: before
+        type: string
+        description: before
+      - name: limit
+        type: string
+        description: limit
+      - name: sortBy
+        type: string
+        description: sortBy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createcollection
+      description: POST /v1/collections
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.createcollection
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listdraftguides
+      description: GET /v1/guides/draft/list
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.listdraftguides
+      with:
+        limit: tools.limit
+        after: tools.after
+        before: tools.before
+        externalSource: tools.externalSource
+      inputParameters:
+      - name: limit
+        type: string
+        description: limit
+      - name: after
+        type: string
+        description: after
+      - name: before
+        type: string
+        description: before
+      - name: externalSource
+        type: string
+        description: 'A JSON stringified, URI encoded external source locator example: encodeURIComponent(JSON.stringify({"source":"github","owner":"my-org","repo":"my-repo","baseUrl'
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: upsertguidedraft
+      description: 'Update or create guide drafts by filePath. Accepts a dictionary mapping file paths to their contents.
+        For each file: - If the guide doesn''t exist, it will be created. - If the guide exists but has no draft, a new draft
+        will be created. - If'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: hexa.upsertguidedraft
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: publishguidedrafts
+      description: Publish all currently drafted guides.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.publishguidedrafts
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteguidedraft
+      description: DELETE /v1/guides/draft/{orgGuideFileId}
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: hexa.deleteguidedraft
+      with:
+        orgGuideFileId: tools.orgGuideFileId
+      inputParameters:
+      - name: orgGuideFileId
+        type: string
+        description: orgGuideFileId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listcells
+      description: List all cells Returns cells from the draft version of the project only, not the published app. Requires
+        a project id for filtering. For SQL and CODE cells, includes the source code content.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.listcells
+      with:
+        projectId: tools.projectId
+        limit: tools.limit
+        after: tools.after
+        before: tools.before
+      inputParameters:
+      - name: projectId
+        type: string
+        description: projectId
+        required: true
+      - name: limit
+        type: string
+        description: limit
+      - name: after
+        type: string
+        description: after
+      - name: before
+        type: string
+        description: before
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createcell
+      description: Create a new cell Creates a new cell in the draft version of a project. Currently only CODE and SQL cell
+        types are supported. Requires EDIT_PROJECT_CONTENTS permission on the project.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.createcell
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getcell
+      description: Get a single cell by ID Returns cells from the draft version of the project only, not the published app.
+        Returns the cell details including id, staticId, cellType, label, dataConnectionId, source contents (for CODE and
+        SQL cells), and proje
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.getcell
+      with:
+        cellId: tools.cellId
+      inputParameters:
+      - name: cellId
+        type: string
+        description: cellId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatecell
+      description: 'Update a cell''s source and/or data connection Updates the source code and/or data connection ID for a
+        cell. For SQL cells, can update SQL source and data connection ID. For code cells, can update code source. Requires
+        EDIT_PROJECT_CONTENTS '
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hexa.updatecell
+      with:
+        cellId: tools.cellId
+      inputParameters:
+      - name: cellId
+        type: string
+        description: cellId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletecell
+      description: Delete a cell Permanently deletes a cell from the draft version of a project. Requires EDIT_PROJECT_CONTENTS
+        permission on the project containing the cell.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: hexa.deletecell
+      with:
+        cellId: tools.cellId
+      inputParameters:
+      - name: cellId
+        type: string
+        description: cellId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getchartimagefromlogic
+      description: Get the rendered PNG image of a chart cell from the current notebook session by cellId. The "cellId" path
+        parameter should be the cell's ID (scoped to a specific version), as opposed to its staticId (which remains stable
+        across versions). R
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hexa.getchartimagefromlogic
+      with:
+        cellId: tools.cellId
+      inputParameters:
+      - name: cellId
+        type: string
+        description: cellId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    HEXA_TOKEN: HEXA_TOKEN
