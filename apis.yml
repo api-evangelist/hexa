@@ -49,6 +49,34 @@ common:
     url: https://app.hex.tech/login
   - type: Blog
     url: https://hex.tech/blog/
+  - type: Integrations
+    url: https://hex.tech/product/integrations/
+integrations:
+  - name: Athena
+  - name: ClickHouse
+  - name: Databricks
+  - name: Dremio
+  - name: Google BigQuery
+  - name: MariaDB
+  - name: Materialize
+  - name: MotherDuck
+  - name: MS SQL Server
+  - name: MySQL
+  - name: Postgres
+  - name: Redshift
+  - name: Snowflake
+  - name: Trino
+  - name: AtScale
+  - name: Cube
+  - name: dbt
+  - name: Elementary
+  - name: Monte Carlo
+  - name: Select Star
+  - name: GitHub
+  - name: GitLab
+  - name: Snowpark ML
+  - name: Dagster
+  - name: Prefect
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
