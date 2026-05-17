@@ -43,7 +43,7 @@ common:
     url: https://learn.hex.tech/
   - type: Pricing
     url: https://hex.tech/pricing/
-  - type: Sign Up
+  - type: SignUp
     url: https://app.hex.tech/signup
   - type: Login
     url: https://app.hex.tech/login
