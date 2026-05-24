@@ -49,6 +49,8 @@ common:
   url: https://hex.tech/blog/
 - type: Integrations
   url: https://hex.tech/product/integrations/
+- type: LLMsTxt
+  url: https://app.hex.tech/llms.txt
 integrations:
 - name: Athena
 - name: ClickHouse
