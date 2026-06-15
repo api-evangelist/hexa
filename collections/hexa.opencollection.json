@@ -1,0 +1,1067 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hex API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "CreatePresignedUrl",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://app.hex.tech/api/v1/embedding/createPresignedUrl/:projectId",
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Create an embedded url for a project"
+    },
+    {
+      "info": {
+        "name": "ListProjects",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/projects",
+        "params": [
+          {
+            "name": "includeArchived",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "includeComponents",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "includeTrashed",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "includeSharing",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "statuses",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "categories",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "creatorEmail",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "ownerEmail",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "collectionId",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "after",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "before",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "sortBy",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "sortDirection",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      },
+      "docs": "List all viewable projects, sorted by most recently created first."
+    },
+    {
+      "info": {
+        "name": "CreateProject",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://app.hex.tech/api/v1/projects",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Create a new project.\n\nCreates a new project in the workspace with the specified title.\nOptionally provide a description and project language."
+    },
+    {
+      "info": {
+        "name": "GetProject",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId",
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "includeSharing",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      },
+      "docs": "Get metadata about a single project."
+    },
+    {
+      "info": {
+        "name": "UpdateProject",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId",
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Use this endpoint to add or remove a status (including endorsements) from a project"
+    },
+    {
+      "info": {
+        "name": "GetQueriedTables",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId/queriedTables",
+        "params": [
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "after",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "before",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Given a project ID, return the list of warehouse tables queried in the project."
+    },
+    {
+      "info": {
+        "name": "EditProjectSharingCollections",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId/sharing/collections",
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Add a project to collections or remove it from collections.\nFor projects, use `CAN_VIEW` to grant the UI permission labeled \"Can explore\".\nUse `APP_ONLY` to grant the UI permission labeled \"Can view app\".\nWorkspace tokens calling this endpoint need to have \"Collections -> Write access\" scope\nin addition to \"Projects -> Write access\" scope."
+    },
+    {
+      "info": {
+        "name": "EditProjectSharingOrgAndPublic",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId/sharing/workspaceAndPublic",
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Update workspace or public-web sharing for a project.\nFor projects, use `CAN_VIEW` to grant the UI permission labeled \"Can explore\".\nUse `APP_ONLY` to grant the UI permission labeled \"Can view app\"."
+    },
+    {
+      "info": {
+        "name": "EditProjectSharingGroups",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId/sharing/groups",
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Add groups to a project or update/remove their project sharing access.\nFor projects, use `CAN_VIEW` to grant the UI permission labeled \"Can explore\".\nUse `APP_ONLY` to grant the UI permission labeled \"Can view app\"."
+    },
+    {
+      "info": {
+        "name": "EditProjectSharingUsers",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId/sharing/users",
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Add users to a project or update/remove their project sharing access.\nFor projects, use `CAN_VIEW` to grant the UI permission labeled \"Can explore\".\nUse `APP_ONLY` to grant the UI permission labeled \"Can view app\"."
+    },
+    {
+      "info": {
+        "name": "IngestSemanticProject",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://app.hex.tech/api/v1/semantic-(projects|models)/:semanticProjectId/ingest",
+        "params": [
+          {
+            "name": "semanticProjectId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Ingest a semantic project from a zip file.\n\nThis API endpoint is subject to a maximum of 3 requests per minute."
+    },
+    {
+      "info": {
+        "name": "UpdateSemanticProject",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://app.hex.tech/api/v1/semantic-(projects|models)/:semanticProjectId",
+        "params": [
+          {
+            "name": "semanticProjectId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Use this endpoint to add or remove a status (including endorsements) from datasets and views within a semantic project\n\nThis endpoint uses atomic semantics - if any update in the batch fails validation,\nthe entire request fails and no changes are applied."
+    },
+    {
+      "info": {
+        "name": "GetProjectRuns",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId/runs",
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "statusFilter",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "runTriggerFilter",
+            "value": "",
+            "type": "query",
+            "description": "Filter by how the run was triggered\nValid values: `API`, `SCHEDULED`, `APP_REFRESH`"
+          }
+        ]
+      },
+      "docs": "Get the status of runs of a project.\nBy default, all run types are returned (API-triggered, scheduled, and publish/refresh runs).\nUse the `runTriggerFilter` parameter to filter to a specific type."
+    },
+    {
+      "info": {
+        "name": "RunProject",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId/runs",
+        "headers": [
+          {
+            "name": "flag-config-override",
+            "value": ""
+          }
+        ],
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Trigger a run of the latest published version of a project.\n\nThis API endpoint is subject to a maximum of 20 requests per minute and 60 requests per hour."
+    },
+    {
+      "info": {
+        "name": "GetRunStatus",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId/runs/:runId",
+        "headers": [
+          {
+            "name": "enable-expanded-stats",
+            "value": ""
+          }
+        ],
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "runId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Get the status of a project run."
+    },
+    {
+      "info": {
+        "name": "CancelRun",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId/runs/:runId",
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "runId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Cancel a project run."
+    },
+    {
+      "info": {
+        "name": "GetChartImageFromRun",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/projects/:projectId/runs/:runId/cells/:staticId/image",
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "runId",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "staticId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Get the rendered PNG image of a chart cell from a completed run by staticCellId.\nThe \"staticId\" path parameter should be the cell's staticId (which remains stable across project versions),\nas opposed to its cellId (which is scoped to a specific version).\n\nReturns a JSON object containing the base64-encoded PNG image of the chart cell\nas rendered at the time of the specified run, along with project/run/cell IDs and MIME type.\nThe cell must have been executed and must not be in an error state.\nOnl"
+    },
+    {
+      "info": {
+        "name": "GetGroup",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/groups/:groupId",
+        "params": [
+          {
+            "name": "groupId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      }
+    },
+    {
+      "info": {
+        "name": "EditGroup",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://app.hex.tech/api/v1/groups/:groupId",
+        "params": [
+          {
+            "name": "groupId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      }
+    },
+    {
+      "info": {
+        "name": "DeleteGroup",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://app.hex.tech/api/v1/groups/:groupId",
+        "params": [
+          {
+            "name": "groupId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      }
+    },
+    {
+      "info": {
+        "name": "ListGroups",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/groups",
+        "params": [
+          {
+            "name": "after",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "before",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "sortBy",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "sortDirection",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      }
+    },
+    {
+      "info": {
+        "name": "CreateGroup",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://app.hex.tech/api/v1/groups",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      }
+    },
+    {
+      "info": {
+        "name": "GetDataConnection",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/data-connections/:dataConnectionId",
+        "params": [
+          {
+            "name": "dataConnectionId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      }
+    },
+    {
+      "info": {
+        "name": "EditDataConnection",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://app.hex.tech/api/v1/data-connections/:dataConnectionId",
+        "params": [
+          {
+            "name": "dataConnectionId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      }
+    },
+    {
+      "info": {
+        "name": "ListDataConnections",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/data-connections",
+        "params": [
+          {
+            "name": "after",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "before",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "sortBy",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "sortDirection",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      }
+    },
+    {
+      "info": {
+        "name": "CreateDataConnection",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://app.hex.tech/api/v1/data-connections",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      }
+    },
+    {
+      "info": {
+        "name": "UpdateDataConnectionSchema",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://app.hex.tech/api/v1/data-connections/:dataConnectionId/schema",
+        "params": [
+          {
+            "name": "dataConnectionId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Use this endpoint to add or remove a status (including endorsements) from databases, schemas, and tables\nwithin a data connection\n\nThis endpoint uses atomic semantics - if any update in the batch fails validation,\nthe entire request fails and no changes are applied"
+    },
+    {
+      "info": {
+        "name": "Me",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/users/me"
+      }
+    },
+    {
+      "info": {
+        "name": "ListUsers",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/users",
+        "params": [
+          {
+            "name": "after",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "before",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "sortBy",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "sortDirection",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "groupId",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      }
+    },
+    {
+      "info": {
+        "name": "DeactivateUser",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://app.hex.tech/api/v1/users/:userId/deactivate",
+        "params": [
+          {
+            "name": "userId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      }
+    },
+    {
+      "info": {
+        "name": "GetCollection",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/collections/:collectionId",
+        "params": [
+          {
+            "name": "collectionId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      }
+    },
+    {
+      "info": {
+        "name": "EditCollection",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://app.hex.tech/api/v1/collections/:collectionId",
+        "params": [
+          {
+            "name": "collectionId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      }
+    },
+    {
+      "info": {
+        "name": "ListCollections",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/collections",
+        "params": [
+          {
+            "name": "after",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "before",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "sortBy",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      }
+    },
+    {
+      "info": {
+        "name": "CreateCollection",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://app.hex.tech/api/v1/collections",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      }
+    },
+    {
+      "info": {
+        "name": "ListDraftGuides",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/guides/draft/list",
+        "params": [
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "after",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "before",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "externalSource",
+            "value": "",
+            "type": "query",
+            "description": "A JSON stringified, URI encoded external source locator\nexample: encodeURIComponent(JSON.stringify({\"source\":\"github\",\"owner\":\"my-org\",\"repo\":\"my-repo\",\"baseUrl\":\"https://github.com\"}))"
+          }
+        ]
+      }
+    },
+    {
+      "info": {
+        "name": "UpsertGuideDraft",
+        "type": "http"
+      },
+      "http": {
+        "method": "PUT",
+        "url": "https://app.hex.tech/api/v1/guides/draft",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Update or create guide drafts by filePath.\n\nAccepts a dictionary mapping file paths to their contents.\nFor each file:\n- If the guide doesn't exist, it will be created.\n- If the guide exists but has no draft, a new draft will be created.\n- If the guide exists with a draft, the draft contents will be updated."
+    },
+    {
+      "info": {
+        "name": "PublishGuideDrafts",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://app.hex.tech/api/v1/guides/publish",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Publish all currently drafted guides."
+    },
+    {
+      "info": {
+        "name": "DeleteGuideDraft",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://app.hex.tech/api/v1/guides/draft/:orgGuideFileId",
+        "params": [
+          {
+            "name": "orgGuideFileId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      }
+    },
+    {
+      "info": {
+        "name": "ListCells",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/cells",
+        "params": [
+          {
+            "name": "projectId",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "after",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "before",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      },
+      "docs": "List all cells\n\nReturns cells from the draft version of the project only, not the published app.\nRequires a project id for filtering.\nFor SQL and CODE cells, includes the source code content."
+    },
+    {
+      "info": {
+        "name": "CreateCell",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://app.hex.tech/api/v1/cells",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Create a new cell\n\nCreates a new cell in the draft version of a project.\nCurrently only CODE and SQL cell types are supported.\nRequires EDIT_PROJECT_CONTENTS permission on the project."
+    },
+    {
+      "info": {
+        "name": "GetCell",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/cells/:cellId",
+        "params": [
+          {
+            "name": "cellId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Get a single cell by ID\n\nReturns cells from the draft version of the project only, not the published app.\nReturns the cell details including id, staticId, cellType, label, dataConnectionId,\nsource contents (for CODE and SQL cells), and projectId."
+    },
+    {
+      "info": {
+        "name": "UpdateCell",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://app.hex.tech/api/v1/cells/:cellId",
+        "params": [
+          {
+            "name": "cellId",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Update a cell's source and/or data connection\n\nUpdates the source code and/or data connection ID for a cell.\nFor SQL cells, can update SQL source and data connection ID.\nFor code cells, can update code source.\nRequires EDIT_PROJECT_CONTENTS permission on the project containing the cell."
+    },
+    {
+      "info": {
+        "name": "DeleteCell",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://app.hex.tech/api/v1/cells/:cellId",
+        "params": [
+          {
+            "name": "cellId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Delete a cell\n\nPermanently deletes a cell from the draft version of a project.\nRequires EDIT_PROJECT_CONTENTS permission on the project containing the cell."
+    },
+    {
+      "info": {
+        "name": "GetChartImageFromLogic",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://app.hex.tech/api/v1/cells/:cellId/image",
+        "params": [
+          {
+            "name": "cellId",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Get the rendered PNG image of a chart cell from the current notebook session by cellId.\nThe \"cellId\" path parameter should be the cell's ID (scoped to a\nspecific version), as opposed to its staticId (which remains stable across versions).\n\nReturns a JSON object containing the base64-encoded PNG image of the chart cell\nas it currently appears in the Logic view, along with the cell ID and MIME type.\nThe cell must have been executed and must not be in an error state.\nOnly chart-type cells are suppo"
+    }
+  ],
+  "bundled": true
+}
