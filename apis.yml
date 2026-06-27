@@ -42,7 +42,7 @@ common:
     url: https://learn.hex.tech/
   - type: Pricing
     url: https://hex.tech/pricing/
-  - type: SignUp
+  - type: Signup
     url: https://app.hex.tech/signup
   - type: Login
     url: https://app.hex.tech/login
@@ -50,7 +50,7 @@ common:
     url: https://hex.tech/blog/
   - type: Integrations
     url: https://hex.tech/product/integrations/
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://app.hex.tech/llms.txt
 integrations:
   - name: Athena

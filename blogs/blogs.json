@@ -3,19 +3,12 @@
   "feeds": [
     {
       "source": "https://hex.tech/blog/",
-      "feed_url": "https://hex.tech/blog/",
-      "title": "",
-      "saved": 0,
-      "method": "none"
-    },
-    {
-      "source": "https://app.hex.tech/login",
-      "feed_url": "https://app.hex.tech/login",
-      "title": "",
-      "saved": 0,
-      "method": "none"
+      "feed_url": "",
+      "saved": 1,
+      "method": "agent-scrape"
     }
   ],
-  "fetched": "2026-06-14T20:42:17Z",
-  "post_count": 1
+  "fetched": "2026-06-27T12:45:32Z",
+  "post_count": 3,
+  "agent_pulled": "2026-06-27"
 }
