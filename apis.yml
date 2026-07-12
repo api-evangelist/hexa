@@ -34,6 +34,14 @@ apis:
       - type: OpenAPI
         url: https://raw.githubusercontent.com/api-evangelist/hexa/refs/heads/main/openapi/hexa-openapi.yml
 common:
+  - type: TrustCenter
+    url: security/hexa-trust-center.yml
+  - type: VulnerabilityDisclosure
+    url: security/hexa-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/hexa-domain-security.yml
+  - type: Authentication
+    url: authentication/hexa-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/hex-technologies
   - type: Website
