@@ -2,13 +2,14 @@
   "repo": "hexa",
   "feeds": [
     {
-      "source": "https://hex.tech/blog/",
-      "feed_url": "",
-      "saved": 1,
-      "method": "agent-scrape"
+      "source": "https://app.hex.tech/login",
+      "feed_url": "https://app.hex.tech/login",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "fetched": "2026-06-27T12:45:32Z",
+  "fetched": "2026-07-11T11:50:51Z",
   "post_count": 3,
-  "agent_pulled": "2026-06-27"
+  "agent_pulled": "2026-07-04"
 }
