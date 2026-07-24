@@ -1,0 +1,290 @@
+openapi: 3.0.0
+info:
+  title: Hex Cells Users API
+  version: 1.0.0
+  description: API specification for the Hex External API
+  license:
+    name: UNLICENSED
+  contact: {}
+servers:
+- url: https://app.hex.tech/api
+security:
+- bearerAuth: []
+tags:
+- name: Users
+paths:
+  /v1/users/me:
+    get:
+      operationId: Me
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeResponse'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+      parameters: []
+      tags:
+      - Users
+  /v1/users:
+    get:
+      operationId: ListUsers
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUsersResponse'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+      parameters:
+      - in: query
+        name: after
+        required: false
+        schema:
+          default: null
+      - in: query
+        name: before
+        required: false
+        schema:
+          default: null
+      - in: query
+        name: limit
+        required: false
+        schema:
+          $ref: '#/components/schemas/LargerPageSize'
+      - in: query
+        name: sortBy
+        required: false
+        schema:
+          $ref: '#/components/schemas/ListUsersSortByEnum'
+      - in: query
+        name: sortDirection
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortDirectionEnum'
+      - in: query
+        name: groupId
+        required: false
+        schema:
+          default: null
+      tags:
+      - Users
+  /v1/users/{userId}/deactivate:
+    post:
+      operationId: DeactivateUser
+      responses:
+        '200':
+          description: ''
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          $ref: '#/components/schemas/UserId'
+      tags:
+      - Users
+components:
+  schemas:
+    Name:
+      type: string
+      minLength: 1
+    TraceId:
+      type: string
+      description: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
+    MeResponse:
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        name:
+          $ref: '#/components/schemas/Name'
+        role:
+          $ref: '#/components/schemas/OrgRole'
+        email:
+          type: string
+        org:
+          properties:
+            id:
+              $ref: '#/components/schemas/OrgId'
+          required:
+          - id
+          type: object
+        token:
+          properties:
+            exp:
+              type: number
+              format: double
+              nullable: true
+          required:
+          - exp
+          type: object
+      required:
+      - id
+      - role
+      - email
+      - org
+      type: object
+      additionalProperties: false
+    TsoaErrorResponsePayload:
+      properties:
+        details:
+          type: string
+        traceId:
+          $ref: '#/components/schemas/TraceId'
+        reason:
+          type: string
+      required:
+      - reason
+      type: object
+    EnumValues_typeofSortDirectionEnum_:
+      type: string
+      enum:
+      - DESC
+      - ASC
+    OrgRole:
+      $ref: '#/components/schemas/EnumValues_typeofOrgRole_'
+    EnumValues_typeofOrgRole_:
+      type: string
+      enum:
+      - ADMIN
+      - MANAGER
+      - EDITOR
+      - EXPLORER
+      - MEMBER
+      - GUEST
+      - EMBEDDED_USER
+      - ANONYMOUS
+    ListUsersSortByEnum:
+      $ref: '#/components/schemas/EnumValues_typeofListUsersSortByEnum_'
+    ApiPaginationCursor:
+      type: string
+      description: 'A cursor string used with `before` and `after` parameters to paginate through a list
+
+        of items on the API.'
+    UserApiResource:
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        name:
+          $ref: '#/components/schemas/Name'
+        role:
+          $ref: '#/components/schemas/OrgRole'
+        email:
+          type: string
+        lastLoginDate:
+          type: string
+          nullable: true
+      required:
+      - id
+      - role
+      - email
+      - lastLoginDate
+      type: object
+      additionalProperties: false
+    LargerPageSize:
+      type: integer
+      format: int32
+      default: '25'
+      description: Number of results to fetch per page for paginated requests
+      minimum: 1
+      maximum: 500
+    OrgId:
+      type: string
+      description: Unique ID for a workspace.
+    ListUsersResponse:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/UserApiResource'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/PaginationApiResource'
+      required:
+      - values
+      - pagination
+      type: object
+      additionalProperties: false
+    EnumValues_typeofListUsersSortByEnum_:
+      type: string
+      enum:
+      - NAME
+      - EMAIL
+    PaginationApiResource:
+      properties:
+        after:
+          allOf:
+          - $ref: '#/components/schemas/ApiPaginationCursor'
+          nullable: true
+        before:
+          allOf:
+          - $ref: '#/components/schemas/ApiPaginationCursor'
+          nullable: true
+      required:
+      - after
+      - before
+      type: object
+      additionalProperties: false
+    UserId:
+      type: string
+      format: uuid
+      description: Unique ID for a user. This can be found from the users page (in Settings).
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    SortDirectionEnum:
+      $ref: '#/components/schemas/EnumValues_typeofSortDirectionEnum_'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

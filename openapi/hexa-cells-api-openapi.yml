@@ -1,0 +1,615 @@
+openapi: 3.0.0
+info:
+  title: Hex Cells API
+  version: 1.0.0
+  description: API specification for the Hex External API
+  license:
+    name: UNLICENSED
+  contact: {}
+servers:
+- url: https://app.hex.tech/api
+security:
+- bearerAuth: []
+tags:
+- name: Cells
+paths:
+  /v1/cells:
+    get:
+      operationId: ListCells
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CellsListApiResource'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+      description: 'List all cells
+
+
+        Returns cells from the draft version of the project only, not the published app.
+
+        Requires a project id for filtering.
+
+        For SQL and CODE cells, includes the source code content.'
+      parameters:
+      - in: query
+        name: projectId
+        required: true
+        schema:
+          $ref: '#/components/schemas/ProjectId'
+      - in: query
+        name: limit
+        required: false
+        schema:
+          $ref: '#/components/schemas/PageSize'
+      - in: query
+        name: after
+        required: false
+        schema:
+          default: null
+      - in: query
+        name: before
+        required: false
+        schema:
+          default: null
+      tags:
+      - Cells
+    post:
+      operationId: CreateCell
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CellApiResource'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+      description: 'Create a new cell
+
+
+        Creates a new cell in the draft version of a project.
+
+        Currently only CODE and SQL cell types are supported.
+
+        Requires EDIT_PROJECT_CONTENTS permission on the project.'
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                location:
+                  properties:
+                    childPosition:
+                      type: string
+                      enum:
+                      - FIRST
+                      - LAST
+                      description: Where to place the cell within the parent section. Defaults to LAST.
+                    parentCellId:
+                      $ref: '#/components/schemas/CellId'
+                      description: Insert the new cell as a child of a section (parent) cell. Use with childPosition to control placement within the section.
+                    insertAfterCellId:
+                      $ref: '#/components/schemas/CellId'
+                      description: Insert the new cell after this cell ID. The cell must belong to the target project.
+                  type: object
+                  description: Controls where the new cell is placed. If omitted, the cell is appended to the end of the project.
+                contents:
+                  properties:
+                    markdownCell:
+                      properties:
+                        source:
+                          type: string
+                      required:
+                      - source
+                      type: object
+                    sqlCell:
+                      properties:
+                        outputDataframe:
+                          type: string
+                        isDataframeSql:
+                          type: boolean
+                          description: 'Set to true to create a dataframe SQL cell that queries the outputs of other
+
+                            SQL cells in the project instead of a data connection.
+
+                            Mutually exclusive with dataConnectionId.'
+                        dataConnectionId:
+                          $ref: '#/components/schemas/DataConnectionId'
+                        source:
+                          type: string
+                      required:
+                      - source
+                      type: object
+                    codeCell:
+                      properties:
+                        source:
+                          type: string
+                      required:
+                      - source
+                      type: object
+                  type: object
+                label:
+                  type: string
+                cellType:
+                  type: string
+                  enum:
+                  - CODE
+                  - SQL
+                  - MARKDOWN
+                projectId:
+                  $ref: '#/components/schemas/ProjectId'
+              required:
+              - contents
+              - cellType
+              - projectId
+              type: object
+      tags:
+      - Cells
+  /v1/cells/{cellId}:
+    get:
+      operationId: GetCell
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CellApiResource'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+      description: 'Get a single cell by ID
+
+
+        Returns cells from the draft version of the project only, not the published app.
+
+        Returns the cell details including id, staticId, cellType, label, dataConnectionId,
+
+        source contents (for CODE and SQL cells), and projectId.'
+      parameters:
+      - in: path
+        name: cellId
+        required: true
+        schema:
+          $ref: '#/components/schemas/CellId'
+      tags:
+      - Cells
+    patch:
+      operationId: UpdateCell
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CellApiResource'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+      description: 'Update a cell''s source and/or data connection
+
+
+        Updates the source code and/or data connection ID for a cell.
+
+        For SQL cells, can update SQL source and data connection ID.
+
+        For code cells, can update code source.
+
+        Requires EDIT_PROJECT_CONTENTS permission on the project containing the cell.'
+      parameters:
+      - in: path
+        name: cellId
+        required: true
+        schema:
+          $ref: '#/components/schemas/CellId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                contents:
+                  properties:
+                    markdownCell:
+                      properties:
+                        source:
+                          type: string
+                      required:
+                      - source
+                      type: object
+                    sqlCell:
+                      properties:
+                        outputDataframe:
+                          type: string
+                        source:
+                          type: string
+                      required:
+                      - source
+                      type: object
+                    codeCell:
+                      properties:
+                        source:
+                          type: string
+                      required:
+                      - source
+                      type: object
+                  type: object
+                dataConnectionId:
+                  allOf:
+                  - $ref: '#/components/schemas/DataConnectionId'
+                  nullable: true
+              type: object
+      tags:
+      - Cells
+    delete:
+      operationId: DeleteCell
+      responses:
+        '204':
+          description: ''
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+      description: 'Delete a cell
+
+
+        Permanently deletes a cell from the draft version of a project.
+
+        Requires EDIT_PROJECT_CONTENTS permission on the project containing the cell.'
+      parameters:
+      - in: path
+        name: cellId
+        required: true
+        schema:
+          $ref: '#/components/schemas/CellId'
+      tags:
+      - Cells
+  /v1/cells/{cellId}/image:
+    get:
+      operationId: GetChartImageFromLogic
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChartImageResponsePayload'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TsoaErrorResponsePayload'
+      description: 'Get the rendered PNG image of a chart cell from the current notebook session by cellId.
+
+        The "cellId" path parameter should be the cell''s ID (scoped to a
+
+        specific version), as opposed to its staticId (which remains stable across versions).
+
+
+        Returns a JSON object containing the base64-encoded PNG image of the chart cell
+
+        as it currently appears in the Logic view, along with the cell ID and MIME type.
+
+        The cell must have been executed and must not be in an error state.
+
+        Only chart-type cells are supported.
+
+
+        Rate limit: 20 requests per minute.'
+      parameters:
+      - in: path
+        name: cellId
+        required: true
+        schema:
+          $ref: '#/components/schemas/CellId'
+      tags:
+      - Cells
+components:
+  schemas:
+    TraceId:
+      type: string
+      description: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
+    StaticCellId:
+      type: string
+      format: uuid
+      description: Unique static ID for a cell. This can be found by going into the menu of a cell in the notebook.
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    TsoaErrorResponsePayload:
+      properties:
+        details:
+          type: string
+        traceId:
+          $ref: '#/components/schemas/TraceId'
+        reason:
+          type: string
+      required:
+      - reason
+      type: object
+    CellId:
+      type: string
+      format: uuid
+      description: Unique ID for a cell. This can be found by going into the menu of a cell in the notebook.
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    ApiPaginationCursor:
+      type: string
+      description: 'A cursor string used with `before` and `after` parameters to paginate through a list
+
+        of items on the API.'
+    CellType:
+      $ref: '#/components/schemas/EnumValues_typeofCellType_'
+    ChartImageResponsePayload:
+      properties:
+        cellId:
+          $ref: '#/components/schemas/CellId'
+        imageBase64:
+          type: string
+        mimeType:
+          type: string
+      required:
+      - cellId
+      - imageBase64
+      - mimeType
+      type: object
+      additionalProperties: false
+    EnumValues_typeofCellType_:
+      type: string
+      enum:
+      - CODE
+      - MARKDOWN
+      - DISPLAY_TABLE
+      - INPUT
+      - SQL
+      - VEGA_CHART
+      - CELL_GROUP
+      - METRIC
+      - TEXT
+      - MAP
+      - WRITEBACK
+      - DBT_METRIC
+      - PIVOT
+      - FILTER
+      - COMPONENT_IMPORT
+      - CHART
+      - BLOCK
+      - EXPLORE
+      - COLLAPSIBLE
+    CellApiResource:
+      properties:
+        id:
+          $ref: '#/components/schemas/CellId'
+        staticId:
+          $ref: '#/components/schemas/StaticCellId'
+        cellType:
+          $ref: '#/components/schemas/CellType'
+        label:
+          type: string
+          nullable: true
+        dataConnectionId:
+          allOf:
+          - $ref: '#/components/schemas/DataConnectionId'
+          nullable: true
+        contents:
+          properties:
+            markdownCell:
+              properties:
+                source:
+                  type: string
+              required:
+              - source
+              type: object
+              nullable: true
+            sqlCell:
+              properties:
+                outputDataframe:
+                  type: string
+                source:
+                  type: string
+              required:
+              - outputDataframe
+              - source
+              type: object
+              nullable: true
+            codeCell:
+              properties:
+                source:
+                  type: string
+              required:
+              - source
+              type: object
+              nullable: true
+          required:
+          - markdownCell
+          - sqlCell
+          - codeCell
+          type: object
+        projectId:
+          $ref: '#/components/schemas/ProjectId'
+      required:
+      - id
+      - staticId
+      - cellType
+      - label
+      - dataConnectionId
+      - contents
+      - projectId
+      type: object
+      additionalProperties: false
+    PaginationApiResource:
+      properties:
+        after:
+          allOf:
+          - $ref: '#/components/schemas/ApiPaginationCursor'
+          nullable: true
+        before:
+          allOf:
+          - $ref: '#/components/schemas/ApiPaginationCursor'
+          nullable: true
+      required:
+      - after
+      - before
+      type: object
+      additionalProperties: false
+    DataConnectionId:
+      type: string
+      format: uuid
+      description: Unique ID for a data connection.
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    PageSize:
+      type: integer
+      format: int32
+      default: '25'
+      description: Number of results to fetch per page for paginated requests
+      minimum: 1
+      maximum: 100
+    ProjectId:
+      type: string
+      format: uuid
+      description: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after `hex` in the URL.
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    CellsListApiResource:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/CellApiResource'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/PaginationApiResource'
+      required:
+      - values
+      - pagination
+      type: object
+      additionalProperties: false
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
