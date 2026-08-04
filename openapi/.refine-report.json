@@ -1,0 +1,30 @@
+{
+  "provider": "hexa",
+  "sources": [
+    "hexa-cells-api-openapi.yml",
+    "hexa-collections-api-openapi.yml",
+    "hexa-data-connections-api-openapi.yml",
+    "hexa-embedding-api-openapi.yml",
+    "hexa-groups-api-openapi.yml",
+    "hexa-guides-api-openapi.yml",
+    "hexa-projects-api-openapi.yml",
+    "hexa-semantic-projects-models-api-openapi.yml",
+    "hexa-users-api-openapi.yml"
+  ],
+  "outputs": [
+    "hexa-cells-api-openapi.yml",
+    "hexa-collections-api-openapi.yml",
+    "hexa-data-connections-api-openapi.yml",
+    "hexa-embedding-api-openapi.yml",
+    "hexa-groups-api-openapi.yml",
+    "hexa-guides-api-openapi.yml",
+    "hexa-projects-api-openapi.yml",
+    "hexa-semantic-projects-models-api-openapi.yml",
+    "hexa-users-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
