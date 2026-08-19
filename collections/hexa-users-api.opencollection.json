@@ -1,0 +1,93 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hex Cells Users API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Me",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.hex.tech/api/v1/users/me"
+          }
+        },
+        {
+          "info": {
+            "name": "ListUsers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.hex.tech/api/v1/users",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "DeactivateUser",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.hex.tech/api/v1/users/:userId/deactivate",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

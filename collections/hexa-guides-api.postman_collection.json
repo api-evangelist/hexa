@@ -1,0 +1,1113 @@
+{
+  "item": [
+    {
+      "id": "87b47793-5d29-4828-988e-a2c8d62c99ac",
+      "name": "Guides",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d35fea19-73df-42f9-937d-0cf45bcc84ab",
+          "name": "List Draft Guides",
+          "request": {
+            "name": "List Draft Guides",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "guides",
+                "draft",
+                "list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "before",
+                  "value": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "externalSource",
+                  "value": "",
+                  "description": "A JSON stringified, URI encoded external source locator\nexample: encodeURIComponent(JSON.stringify({\"source\":\"github\",\"owner\":\"my-org\",\"repo\":\"my-repo\",\"baseUrl\":\"https://github.com\"}))"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "70ac1107-5c40-489f-a37e-7ca6c932b9c1",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft",
+                    "list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "after",
+                      "value": ""
+                    },
+                    {
+                      "key": "before",
+                      "value": ""
+                    },
+                    {
+                      "key": "externalSource",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"values\": [\n    {\n      \"id\": \"DF1fb4aC-9d31-C785-FAAD-5341A0dbFFf9\",\n      \"filePath\": \"string\"\n    },\n    {\n      \"id\": \"db50b6C1-BF73-9d7b-cA7a-7e5aA29b19E7\",\n      \"filePath\": \"string\"\n    }\n  ],\n  \"pagination\": {\n    \"after\": \"string\",\n    \"before\": \"string\"\n  },\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8916e2c9-f301-4844-bb02-12402b6d9dc9",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft",
+                    "list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "after",
+                      "value": ""
+                    },
+                    {
+                      "key": "before",
+                      "value": ""
+                    },
+                    {
+                      "key": "externalSource",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "25209620-8e64-4eb5-958b-1330e8621160",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft",
+                    "list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "after",
+                      "value": ""
+                    },
+                    {
+                      "key": "before",
+                      "value": ""
+                    },
+                    {
+                      "key": "externalSource",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cbf5389e-d2e7-4451-b51a-947494d591a2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft",
+                    "list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "after",
+                      "value": ""
+                    },
+                    {
+                      "key": "before",
+                      "value": ""
+                    },
+                    {
+                      "key": "externalSource",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b0749b4f-5d19-4dfd-933b-8c23793fdff9",
+          "name": "Upsert Guide Draft",
+          "request": {
+            "name": "Upsert Guide Draft",
+            "description": {
+              "content": "Update or create guide drafts by filePath.\n\nAccepts a dictionary mapping file paths to their contents.\nFor each file:\n- If the guide doesn't exist, it will be created.\n- If the guide exists but has no draft, a new draft will be created.\n- If the guide exists with a draft, the draft contents will be updated.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "guides",
+                "draft"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"files\": [\n    {\n      \"contents\": \"<string>\",\n      \"filePath\": \"<string>\",\n      \"externalSource\": {\n        \"source\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    },\n    {\n      \"contents\": \"<string>\",\n      \"filePath\": \"<string>\",\n      \"externalSource\": {\n        \"source\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    }\n  ],\n  \"forceWrite\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "95ad7aca-39a3-41ce-a32f-c443ab674cf9",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"files\": [\n    {\n      \"contents\": \"<string>\",\n      \"filePath\": \"<string>\",\n      \"externalSource\": {\n        \"source\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    },\n    {\n      \"contents\": \"<string>\",\n      \"filePath\": \"<string>\",\n      \"externalSource\": {\n        \"source\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    }\n  ],\n  \"forceWrite\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"files\": [\n    {\n      \"id\": \"eCfa5A0f-4DAE-E6ea-ee7e-24C3E2f2bfad\",\n      \"filePath\": \"string\"\n    },\n    {\n      \"id\": \"D984C457-A759-ed85-1bb3-1EAfCF7e6afB\",\n      \"filePath\": \"string\"\n    }\n  ],\n  \"warnings\": [\n    {\n      \"message\": \"string\",\n      \"filePath\": \"string\"\n    },\n    {\n      \"message\": \"string\",\n      \"filePath\": \"string\"\n    }\n  ],\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b406b3b9-8040-4112-a739-0ec67ed31401",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"files\": [\n    {\n      \"contents\": \"<string>\",\n      \"filePath\": \"<string>\",\n      \"externalSource\": {\n        \"source\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    },\n    {\n      \"contents\": \"<string>\",\n      \"filePath\": \"<string>\",\n      \"externalSource\": {\n        \"source\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    }\n  ],\n  \"forceWrite\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6a90abb4-6e45-42ab-86d1-c95ee5ff22f7",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"files\": [\n    {\n      \"contents\": \"<string>\",\n      \"filePath\": \"<string>\",\n      \"externalSource\": {\n        \"source\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    },\n    {\n      \"contents\": \"<string>\",\n      \"filePath\": \"<string>\",\n      \"externalSource\": {\n        \"source\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    }\n  ],\n  \"forceWrite\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f3fe8f9-15dc-47a2-88f5-2a4c2df56ec2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"files\": [\n    {\n      \"contents\": \"<string>\",\n      \"filePath\": \"<string>\",\n      \"externalSource\": {\n        \"source\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    },\n    {\n      \"contents\": \"<string>\",\n      \"filePath\": \"<string>\",\n      \"externalSource\": {\n        \"source\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    }\n  ],\n  \"forceWrite\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "84446a1e-29cf-46f6-8e2a-b6e3c7f9caca",
+          "name": "Publish Guide Drafts",
+          "request": {
+            "name": "Publish Guide Drafts",
+            "description": {
+              "content": "Publish all currently drafted guides.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "guides",
+                "publish"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orgGuideFileIds\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"publishAllDraftGuides\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a9790765-b086-4fb7-af4c-d0bef54548d0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "publish"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"orgGuideFileIds\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"publishAllDraftGuides\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"publishedGuides\": [\n    {\n      \"id\": \"<uuid>\",\n      \"filePath\": \"string\"\n    },\n    {\n      \"id\": \"<uuid>\",\n      \"filePath\": \"string\"\n    }\n  ],\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "77ab5ba7-2fc8-489b-b35d-0ea1b4471f3c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "publish"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"orgGuideFileIds\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"publishAllDraftGuides\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c0f2f33d-0188-4d25-b8cd-b27c5a68b7d2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "publish"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"orgGuideFileIds\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"publishAllDraftGuides\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a75656fe-2ddb-4010-b705-9331208b4cbd",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "publish"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"orgGuideFileIds\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"publishAllDraftGuides\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "575e0acb-0d06-467e-ab96-db6a996d53e1",
+          "name": "Delete Guide Draft",
+          "request": {
+            "name": "Delete Guide Draft",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "guides",
+                "draft",
+                ":orgGuideFileId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "orgGuideFileId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "043995a9-91a1-437e-ade7-a417cd7c8062",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft",
+                    ":orgGuideFileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "orgGuideFileId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "79b43322-8b21-481c-b022-c0c1e4f62251",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft",
+                    ":orgGuideFileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "orgGuideFileId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "32af124b-877d-4c7a-bd1f-429f085bcf94",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft",
+                    ":orgGuideFileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "orgGuideFileId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a5aef0c7-7400-4a34-9d9f-6bb3adc08c7e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "guides",
+                    "draft",
+                    ":orgGuideFileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "orgGuideFileId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"string\",\n  \"details\": \"string\",\n  \"traceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.hex.tech/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "7143cf59-2281-44e9-be25-44beeea3450b",
+    "name": "Hex Cells Guides API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API specification for the Hex External API",
+      "type": "text/plain"
+    }
+  }
+}
