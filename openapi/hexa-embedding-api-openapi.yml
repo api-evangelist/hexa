@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Hex Cells Embedding API
+  title: Hex Embedding API
   version: 1.0.0
   description: API specification for the Hex External API
   license:
@@ -56,11 +56,10 @@ paths:
               $ref: '#/components/schemas/EmbeddingRequest'
       tags:
       - Embedding
+      summary: Create presigned url
+      x-summary-source: derived
 components:
   schemas:
-    TraceId:
-      type: string
-      description: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
     TsoaErrorResponsePayload:
       properties:
         details:
@@ -72,6 +71,11 @@ components:
       required:
       - reason
       type: object
+    ProjectId:
+      type: string
+      format: uuid
+      description: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after `hex` in the URL.
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
     EmbeddingResponse:
       properties:
         url:
@@ -145,11 +149,9 @@ components:
           description: Run the embed API call in test mode. Does not run the app and will not count towards rate limits or embedding usage counts.
       type: object
       additionalProperties: {}
-    ProjectId:
+    TraceId:
       type: string
-      format: uuid
-      description: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after `hex` in the URL.
-      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      description: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
   securitySchemes:
     bearerAuth:
       type: http

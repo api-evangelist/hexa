@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Hex Cells Semantic (projects|models) API
+  title: Hex Semantic (projects|models) API
   version: 1.0.0
   description: API specification for the Hex External API
   license:
@@ -84,6 +84,8 @@ paths:
               type: object
       tags:
       - Semantic (projects|models)
+      summary: Ingest semantic project
+      x-summary-source: derived
   /v1/semantic-(projects|models)/{semanticProjectId}:
     patch:
       operationId: UpdateSemanticProject
@@ -146,55 +148,10 @@ paths:
               $ref: '#/components/schemas/UpdateSemanticProjectRequest'
       tags:
       - Semantic (projects|models)
+      summary: Update semantic project
+      x-summary-source: derived
 components:
   schemas:
-    ProblemSeverity:
-      type: string
-      enum:
-      - fatal
-      - error
-      - warning
-    TraceId:
-      type: string
-      description: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
-    UpdateStatusErrorDetail:
-      description: Details about a failed update
-      properties:
-        name:
-          type: string
-          description: The name of the dataset or view
-        type:
-          type: string
-          enum:
-          - DATASET
-          - VIEW
-          description: The type of object
-        reason:
-          type: string
-          enum:
-          - not_found
-          - invalid_status
-          description: The reason for the failure
-        value:
-          type: string
-          description: The invalid value (for invalid_status errors)
-      required:
-      - name
-      - type
-      - reason
-      type: object
-      additionalProperties: false
-    TsoaErrorResponsePayload:
-      properties:
-        details:
-          type: string
-        traceId:
-          $ref: '#/components/schemas/TraceId'
-        reason:
-          type: string
-      required:
-      - reason
-      type: object
     HexSLTypes.PublicProblem:
       description: A problem encountered during the import of a public HexSL project.
       properties:
@@ -219,28 +176,26 @@ components:
       - impact_paths
       type: object
       additionalProperties: false
-    MetricflowModelSchemas:
-      $ref: '#/components/schemas/Record_string.Record_string.HexSLTypes.DataType__'
-    SemanticProjectId:
-      type: string
-      format: uuid
-      description: 'Unique ID for a Hex semantic project. This can be found from the semantic
-
-        projects admin panel (in Settings).'
-      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-    Omit_TsoaErrorResponsePayload.details_:
-      $ref: '#/components/schemas/Pick_TsoaErrorResponsePayload.Exclude_keyofTsoaErrorResponsePayload.details__'
-      description: Construct a type with the properties of T except for those in type K.
-    Pick_TsoaErrorResponsePayload.Exclude_keyofTsoaErrorResponsePayload.details__:
+    TsoaErrorResponsePayload:
       properties:
-        reason:
+        details:
           type: string
         traceId:
           $ref: '#/components/schemas/TraceId'
+        reason:
+          type: string
       required:
       - reason
       type: object
-      description: From T, pick a set of properties whose keys are in the union K
+    ProblemMessage:
+      type: string
+    Record_string.Record_string.HexSLTypes.DataType__:
+      properties: {}
+      type: object
+      description: Construct a type with a set of properties K of type T
+    Omit_TsoaErrorResponsePayload.details_:
+      $ref: '#/components/schemas/Pick_TsoaErrorResponsePayload.Exclude_keyofTsoaErrorResponsePayload.details__'
+      description: Construct a type with the properties of T except for those in type K.
     SemanticProjectsSyncResponsePayload:
       properties:
         traceId:
@@ -271,6 +226,12 @@ components:
       - contents
       type: object
       additionalProperties: false
+    ProblemSeverity:
+      type: string
+      enum:
+      - fatal
+      - error
+      - warning
     SemanticObjectUpdate:
       description: 'A single update for a semantic object (dataset or view)
 
@@ -286,8 +247,9 @@ components:
           type: string
           description: The name of the dataset or view
         status:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The status name to apply, or null to remove the current status
       required:
       - type
@@ -295,6 +257,19 @@ components:
       - status
       type: object
       additionalProperties: false
+    Pick_TsoaErrorResponsePayload.Exclude_keyofTsoaErrorResponsePayload.details__:
+      properties:
+        reason:
+          type: string
+        traceId:
+          $ref: '#/components/schemas/TraceId'
+      required:
+      - reason
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    TraceId:
+      type: string
+      description: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
     UpdateSemanticProjectRequest:
       description: 'Request body for updating semantic datasets and views
 
@@ -309,17 +284,33 @@ components:
       - updates
       type: object
       additionalProperties: false
-    ProblemKeyPath:
-      items:
-        anyOf:
-        - type: string
-        - type: number
-          format: double
-      type: array
-    Record_string.Record_string.HexSLTypes.DataType__:
-      properties: {}
+    UpdateStatusErrorDetail:
+      description: Details about a failed update
+      properties:
+        name:
+          type: string
+          description: The name of the dataset or view
+        type:
+          type: string
+          enum:
+          - DATASET
+          - VIEW
+          description: The type of object
+        reason:
+          type: string
+          enum:
+          - not_found
+          - invalid_status
+          description: The reason for the failure
+        value:
+          type: string
+          description: The invalid value (for invalid_status errors)
+      required:
+      - name
+      - type
+      - reason
       type: object
-      description: Construct a type with a set of properties K of type T
+      additionalProperties: false
     UpdateSemanticProjectResponse:
       description: Response body for successful status updates
       properties:
@@ -329,8 +320,9 @@ components:
               items:
                 properties:
                   status:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                   name:
                     type: string
                 required:
@@ -342,8 +334,9 @@ components:
               items:
                 properties:
                   status:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                   name:
                     type: string
                 required:
@@ -359,8 +352,6 @@ components:
       - updated
       type: object
       additionalProperties: false
-    ProblemMessage:
-      type: string
     HexSLProblemWithDisplay:
       allOf:
       - $ref: '#/components/schemas/HexSLTypes.PublicProblem'
@@ -370,6 +361,22 @@ components:
         required:
         - display
         type: object
+    ProblemKeyPath:
+      items:
+        anyOf:
+        - type: string
+        - type: number
+          format: double
+      type: array
+    SemanticProjectId:
+      type: string
+      format: uuid
+      description: 'Unique ID for a Hex semantic project. This can be found from the semantic
+
+        projects admin panel (in Settings).'
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    MetricflowModelSchemas:
+      $ref: '#/components/schemas/Record_string.Record_string.HexSLTypes.DataType__'
   securitySchemes:
     bearerAuth:
       type: http

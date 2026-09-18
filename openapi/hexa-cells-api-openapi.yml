@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
   title: Hex Cells API
   version: 1.0.0
@@ -78,6 +78,8 @@ paths:
           default: null
       tags:
       - Cells
+      summary: List cells
+      x-summary-source: derived
     post:
       operationId: CreateCell
       responses:
@@ -194,6 +196,8 @@ paths:
               type: object
       tags:
       - Cells
+      summary: Create cell
+      x-summary-source: derived
   /v1/cells/{cellId}:
     get:
       operationId: GetCell
@@ -238,6 +242,8 @@ paths:
           $ref: '#/components/schemas/CellId'
       tags:
       - Cells
+      summary: Get cell
+      x-summary-source: derived
     patch:
       operationId: UpdateCell
       responses:
@@ -322,10 +328,11 @@ paths:
                 dataConnectionId:
                   allOf:
                   - $ref: '#/components/schemas/DataConnectionId'
-                  nullable: true
               type: object
       tags:
       - Cells
+      summary: Update cell
+      x-summary-source: derived
     delete:
       operationId: DeleteCell
       responses:
@@ -369,6 +376,8 @@ paths:
           $ref: '#/components/schemas/CellId'
       tags:
       - Cells
+      summary: Delete cell
+      x-summary-source: derived
   /v1/cells/{cellId}/image:
     get:
       operationId: GetChartImageFromLogic
@@ -434,16 +443,10 @@ paths:
           $ref: '#/components/schemas/CellId'
       tags:
       - Cells
+      summary: Get chart image from logic
+      x-summary-source: derived
 components:
   schemas:
-    TraceId:
-      type: string
-      description: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
-    StaticCellId:
-      type: string
-      format: uuid
-      description: Unique static ID for a cell. This can be found by going into the menu of a cell in the notebook.
-      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
     TsoaErrorResponsePayload:
       properties:
         details:
@@ -455,18 +458,101 @@ components:
       required:
       - reason
       type: object
+    ProjectId:
+      type: string
+      format: uuid
+      description: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after `hex` in the URL.
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    CellsListApiResource:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/CellApiResource'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/PaginationApiResource'
+      required:
+      - values
+      - pagination
+      type: object
+      additionalProperties: false
+    StaticCellId:
+      type: string
+      format: uuid
+      description: Unique static ID for a cell. This can be found by going into the menu of a cell in the notebook.
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    CellApiResource:
+      properties:
+        id:
+          $ref: '#/components/schemas/CellId'
+        staticId:
+          $ref: '#/components/schemas/StaticCellId'
+        cellType:
+          $ref: '#/components/schemas/CellType'
+        label:
+          type:
+          - string
+          - 'null'
+        dataConnectionId:
+          allOf:
+          - $ref: '#/components/schemas/DataConnectionId'
+        contents:
+          properties:
+            markdownCell:
+              properties:
+                source:
+                  type: string
+              required:
+              - source
+              type:
+              - object
+              - 'null'
+            sqlCell:
+              properties:
+                outputDataframe:
+                  type: string
+                source:
+                  type: string
+              required:
+              - outputDataframe
+              - source
+              type:
+              - object
+              - 'null'
+            codeCell:
+              properties:
+                source:
+                  type: string
+              required:
+              - source
+              type:
+              - object
+              - 'null'
+          required:
+          - markdownCell
+          - sqlCell
+          - codeCell
+          type: object
+        projectId:
+          $ref: '#/components/schemas/ProjectId'
+      required:
+      - id
+      - staticId
+      - cellType
+      - label
+      - dataConnectionId
+      - contents
+      - projectId
+      type: object
+      additionalProperties: false
+    TraceId:
+      type: string
+      description: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
     CellId:
       type: string
       format: uuid
       description: Unique ID for a cell. This can be found by going into the menu of a cell in the notebook.
       pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-    ApiPaginationCursor:
-      type: string
-      description: 'A cursor string used with `before` and `after` parameters to paginate through a list
-
-        of items on the API.'
-    CellType:
-      $ref: '#/components/schemas/EnumValues_typeofCellType_'
     ChartImageResponsePayload:
       properties:
         cellId:
@@ -481,6 +567,33 @@ components:
       - mimeType
       type: object
       additionalProperties: false
+    ApiPaginationCursor:
+      type: string
+      description: 'A cursor string used with `before` and `after` parameters to paginate through a list
+
+        of items on the API.'
+    PaginationApiResource:
+      properties:
+        after:
+          allOf:
+          - $ref: '#/components/schemas/ApiPaginationCursor'
+        before:
+          allOf:
+          - $ref: '#/components/schemas/ApiPaginationCursor'
+      required:
+      - after
+      - before
+      type: object
+      additionalProperties: false
+    CellType:
+      $ref: '#/components/schemas/EnumValues_typeofCellType_'
+    PageSize:
+      type: integer
+      format: int32
+      default: '25'
+      description: Number of results to fetch per page for paginated requests
+      minimum: 1
+      maximum: 100
     EnumValues_typeofCellType_:
       type: string
       enum:
@@ -503,112 +616,11 @@ components:
       - BLOCK
       - EXPLORE
       - COLLAPSIBLE
-    CellApiResource:
-      properties:
-        id:
-          $ref: '#/components/schemas/CellId'
-        staticId:
-          $ref: '#/components/schemas/StaticCellId'
-        cellType:
-          $ref: '#/components/schemas/CellType'
-        label:
-          type: string
-          nullable: true
-        dataConnectionId:
-          allOf:
-          - $ref: '#/components/schemas/DataConnectionId'
-          nullable: true
-        contents:
-          properties:
-            markdownCell:
-              properties:
-                source:
-                  type: string
-              required:
-              - source
-              type: object
-              nullable: true
-            sqlCell:
-              properties:
-                outputDataframe:
-                  type: string
-                source:
-                  type: string
-              required:
-              - outputDataframe
-              - source
-              type: object
-              nullable: true
-            codeCell:
-              properties:
-                source:
-                  type: string
-              required:
-              - source
-              type: object
-              nullable: true
-          required:
-          - markdownCell
-          - sqlCell
-          - codeCell
-          type: object
-        projectId:
-          $ref: '#/components/schemas/ProjectId'
-      required:
-      - id
-      - staticId
-      - cellType
-      - label
-      - dataConnectionId
-      - contents
-      - projectId
-      type: object
-      additionalProperties: false
-    PaginationApiResource:
-      properties:
-        after:
-          allOf:
-          - $ref: '#/components/schemas/ApiPaginationCursor'
-          nullable: true
-        before:
-          allOf:
-          - $ref: '#/components/schemas/ApiPaginationCursor'
-          nullable: true
-      required:
-      - after
-      - before
-      type: object
-      additionalProperties: false
     DataConnectionId:
       type: string
       format: uuid
       description: Unique ID for a data connection.
       pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-    PageSize:
-      type: integer
-      format: int32
-      default: '25'
-      description: Number of results to fetch per page for paginated requests
-      minimum: 1
-      maximum: 100
-    ProjectId:
-      type: string
-      format: uuid
-      description: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after `hex` in the URL.
-      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-    CellsListApiResource:
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/CellApiResource'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/PaginationApiResource'
-      required:
-      - values
-      - pagination
-      type: object
-      additionalProperties: false
   securitySchemes:
     bearerAuth:
       type: http

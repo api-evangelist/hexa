@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Hex Cells Projects API
+  title: Hex Projects API
   version: 1.0.0
   description: API specification for the Hex External API
   license:
@@ -63,6 +63,8 @@ paths:
               type: object
       tags:
       - Projects
+      summary: Create project
+      x-summary-source: derived
     get:
       operationId: ListProjects
       responses:
@@ -171,6 +173,8 @@ paths:
           $ref: '#/components/schemas/SortDirectionEnum'
       tags:
       - Projects
+      summary: List projects
+      x-summary-source: derived
   /v1/projects/{projectId}:
     get:
       operationId: GetProject
@@ -208,6 +212,8 @@ paths:
           type: boolean
       tags:
       - Projects
+      summary: Get project
+      x-summary-source: derived
     patch:
       operationId: UpdateProject
       responses:
@@ -255,11 +261,14 @@ paths:
             schema:
               properties:
                 status:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
               type: object
       tags:
       - Projects
+      summary: Update project
+      x-summary-source: derived
   /v1/projects/{projectId}/queriedTables:
     get:
       operationId: GetQueriedTables
@@ -324,6 +333,8 @@ paths:
           $ref: '#/components/schemas/ProjectId'
       tags:
       - Projects
+      summary: Get queried tables
+      x-summary-source: derived
   /v1/projects/{projectId}/sharing/collections:
     patch:
       operationId: EditProjectSharingCollections
@@ -412,6 +423,8 @@ paths:
               type: object
       tags:
       - Projects
+      summary: Edit project sharing collections
+      x-summary-source: derived
   /v1/projects/{projectId}/sharing/workspaceAndPublic:
     patch:
       operationId: EditProjectSharingOrgAndPublic
@@ -475,6 +488,8 @@ paths:
               type: object
       tags:
       - Projects
+      summary: Edit project sharing org and public
+      x-summary-source: derived
   /v1/projects/{projectId}/sharing/groups:
     patch:
       operationId: EditProjectSharingGroups
@@ -559,6 +574,8 @@ paths:
               type: object
       tags:
       - Projects
+      summary: Edit project sharing groups
+      x-summary-source: derived
   /v1/projects/{projectId}/sharing/users:
     patch:
       operationId: EditProjectSharingUsers
@@ -643,6 +660,8 @@ paths:
               type: object
       tags:
       - Projects
+      summary: Edit project sharing users
+      x-summary-source: derived
   /v1/projects/{projectId}/runs:
     post:
       operationId: RunProject
@@ -702,6 +721,8 @@ paths:
               $ref: '#/components/schemas/RunProjectRequestBody'
       tags:
       - Projects
+      summary: Run project
+      x-summary-source: derived
     get:
       operationId: GetProjectRuns
       responses:
@@ -765,6 +786,8 @@ paths:
           $ref: '#/components/schemas/RunTypeFilter'
       tags:
       - Projects
+      summary: Get project runs
+      x-summary-source: derived
   /v1/projects/{projectId}/runs/{runId}:
     get:
       operationId: GetRunStatus
@@ -812,6 +835,8 @@ paths:
           type: string
       tags:
       - Projects
+      summary: Get run status
+      x-summary-source: derived
     delete:
       operationId: CancelRun
       responses:
@@ -849,6 +874,8 @@ paths:
           $ref: '#/components/schemas/InputRunId'
       tags:
       - Projects
+      summary: Cancel run
+      x-summary-source: derived
   /v1/projects/{projectId}/runs/{runId}/cells/{staticId}/image:
     get:
       operationId: GetChartImageFromRun
@@ -924,32 +951,233 @@ paths:
           $ref: '#/components/schemas/StaticCellId'
       tags:
       - Projects
+      summary: Get chart image from run
+      x-summary-source: derived
 components:
   schemas:
-    TimezoneDesignator:
-      type: string
-      description: An ISO 8601 timezone designator like +08:00.
-    StaticCellId:
+    TsoaErrorResponsePayload:
+      properties:
+        details:
+          type: string
+        traceId:
+          $ref: '#/components/schemas/TraceId'
+        reason:
+          type: string
+      required:
+      - reason
+      type: object
+    UserId:
       type: string
       format: uuid
-      description: Unique static ID for a cell. This can be found by going into the menu of a cell in the notebook.
-      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-    ResponseRunId:
-      type: string
-      format: uuid
-      description: Unique ID for a run of a Hex project
+      description: Unique ID for a user. This can be found from the users page (in Settings).
       pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
     EnumValues_typeofSortDirectionEnum_:
       type: string
       enum:
       - DESC
       - ASC
-    EnumValues_typeofSortByEnum_:
+    RunNotificationType:
+      description: The condition that determines whether or not the notification should be delivered based on these types.
+      enum:
+      - SUCCESS
+      - FAILURE
+      - ALL
+      type: string
+    StateEvent:
+      description: Response format returned by the runProject endpoint
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+        timestamp:
+          type: string
+      required:
+      - type
+      - value
+      - timestamp
+      type: object
+      additionalProperties: false
+    ApiPaginationCursor:
+      type: string
+      description: 'A cursor string used with `before` and `after` parameters to paginate through a list
+
+        of items on the API.'
+    EditProjectSharingCollectionsResponse:
+      properties:
+        project:
+          $ref: '#/components/schemas/ProjectApiResource'
+        errors:
+          items:
+            $ref: '#/components/schemas/ShareProjectWithCollectionError'
+          type: array
+      required:
+      - project
+      type: object
+      additionalProperties: false
+    NextPageUrl:
+      type: string
+      description: URL to fetch the next page of results for a paginated API request
+    InvalidParamPayload:
+      properties:
+        traceId:
+          $ref: '#/components/schemas/TraceId'
+        invalid:
+          items:
+            $ref: '#/components/schemas/InvalidParam'
+          type: array
+          description: Array of specified input parameters that were invalid or could not be parsed
+        notFound:
+          items:
+            $ref: '#/components/schemas/NotFoundParam'
+          type: array
+          description: Array of specified input parameter names that were not found in the project
+      required:
+      - traceId
+      - invalid
+      - notFound
+      type: object
+    ShareProjectWithCollectionError:
+      properties:
+        collectionIds:
+          items:
+            $ref: '#/components/schemas/CollectionId'
+          type: array
+        reason:
+          type: string
+      required:
+      - collectionIds
+      - reason
+      type: object
+      additionalProperties: false
+    AccessLevelEnum:
+      $ref: '#/components/schemas/EnumValues_typeofAccessLevelEnum_'
+      description: 'Access level granted by sharing endpoints.
+
+        For projects, `CAN_VIEW` is the API value that corresponds to the UI permission labeled "Can explore".
+
+        `APP_ONLY` is the API value that corresponds to the UI permission labeled "Can view app".'
+    EnumValues_typeofRunTypeFilter_:
       type: string
       enum:
-      - CREATED_AT
-      - LAST_EDITED_AT
-      - LAST_PUBLISHED_AT
+      - API
+      - SCHEDULED
+      - APP_REFRESH
+      - ALL
+    EnumValues_typeofDayOfWeekApiEnum_:
+      type: string
+      enum:
+      - SUNDAY
+      - MONDAY
+      - TUESDAY
+      - WEDNESDAY
+      - THURSDAY
+      - FRIDAY
+      - SATURDAY
+    EnumValues_typeofAccessLevelEnum_:
+      type: string
+      enum:
+      - NONE
+      - APP_ONLY
+      - CAN_VIEW
+      - CAN_EDIT
+      - FULL_ACCESS
+    DataConnectionId:
+      type: string
+      format: uuid
+      description: Unique ID for a data connection.
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    TraceId:
+      type: string
+      description: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
+    RunProjectRequestBody:
+      description: Request body format for triggering a project run
+      properties:
+        inputParams:
+          properties: {}
+          additionalProperties: {}
+          type: object
+          description: 'Optionally specify input parameters for this project run.
+
+            These should be structured as a dictionary of key/value pairs, where the key name matches the name of the variable in the Hex project.
+
+
+            Only parameters that are added to the published app can be set via this request parameter. Any additional inputs will be ignored.
+
+            It is invalid to pass in both a viewId and inputParams.
+
+
+            If no input parameters are provided, the project will be run with the default input values.
+
+            Note that if input parameters are provided, this run will not be able to update the cached values for the project, and the updateCache setting (below) will be ignored.'
+          example:
+            text_input_1: Hello World
+            numeric_input_1: 123
+        dryRun:
+          type: boolean
+          description: When true, this endpoint will perform a dry run that does not run the project. This can be useful for validating the structure of an API call, and inspecting a dummy response, without running a project.
+          default: 'false'
+        updateCache:
+          type: boolean
+          deprecated: true
+        notifications:
+          items:
+            $ref: '#/components/schemas/ProjectRunNotification'
+          type: array
+          description: 'Optionally specify a list of notification details that will be delivered once a project run completes.
+
+            Notifications can be configured for delivery to Slack channels, Hex users, or Hex groups.'
+          example:
+          - type: ALL
+            includeSuccessScreenshot: 'true'
+            slackChannelIds:
+            - C0000000
+            userIds:
+            - uuid-user-1
+            - uuid-user-2
+          - type: FAILURE
+            includeSuccessScreenshot: 'false'
+            userIds:
+            - uuid-user-1
+            groupIds:
+            - uuid-group-1
+        updatePublishedResults:
+          type: boolean
+          description: 'When true, the cached state of the published app will be updated with the latest
+
+            run results. You must have at least "Can Edit" permissions on the project to do so.
+
+            Note: this cannot be set to true if custom input parameters are provided.'
+          default: 'false'
+        useCachedSqlResults:
+          type: boolean
+          description: 'When false, the project will run without using any cached SQL results, and will
+
+            update those cached SQL results.'
+          default: 'true'
+        viewId:
+          type: string
+          description: 'Optionally specify a SavedView viewId to use for the project run. If specified, the saved view''s inputs will be used for the project run.
+
+            It is invalid to pass in both a viewId and inputParams.
+
+            If not specified, the default inputs will be used.'
+      type: object
+      additionalProperties: false
+    ProjectQueriedTableResource:
+      properties:
+        dataConnectionId:
+          $ref: '#/components/schemas/DataConnectionId'
+        dataConnectionName:
+          type: string
+        tableName:
+          type: string
+      required:
+      - dataConnectionId
+      - dataConnectionName
+      - tableName
+      type: object
+      additionalProperties: false
     NotificationRecipient:
       properties:
         id:
@@ -969,220 +1197,76 @@ components:
       - name
       type: object
       additionalProperties: false
-    ProjectQueriedTablesApiResource:
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/ProjectQueriedTableResource'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/PaginationApiResource'
-        traceId:
-          type: string
-      required:
-      - values
-      - pagination
-      - traceId
-      type: object
-      additionalProperties: false
-    ShareProjectWithGroupError:
-      properties:
-        groupIds:
-          items:
-            $ref: '#/components/schemas/GroupId'
-          type: array
-        reason:
-          type: string
-      required:
-      - groupIds
-      - reason
-      type: object
-      additionalProperties: false
-    UserId:
-      type: string
-      format: uuid
-      description: Unique ID for a user. This can be found from the users page (in Settings).
-      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-    EnumValues_typeofDayOfWeekApiEnum_:
-      type: string
-      enum:
-      - SUNDAY
-      - MONDAY
-      - TUESDAY
-      - WEDNESDAY
-      - THURSDAY
-      - FRIDAY
-      - SATURDAY
-    NotFoundParam:
-      type: string
-      description: Name of an input parameter passed to the API call that was not found in the project.
-    TraceId:
-      type: string
-      description: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
-    DataConnectionId:
-      type: string
-      format: uuid
-      description: Unique ID for a data connection.
-      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-    EnumValues_typeofScheduleCadenceApiEnum_:
-      type: string
-      enum:
-      - HOURLY
-      - DAILY
-      - WEEKLY
-      - MONTHLY
-      - CUSTOM
-    ScreenshotFormatType:
-      type: string
-      enum:
-      - png
-      - pdf
-      description: The file format of the generated screenshot.
-    RunStatusUrl:
-      type: string
-      description: URL to query the status of the project run via the Hex API
-    DayOfWeekApiEnum:
-      $ref: '#/components/schemas/EnumValues_typeofDayOfWeekApiEnum_'
-    ShareProjectWithWorkspaceError:
-      properties:
-        type:
-          type: string
-          enum:
-          - workspace
-          - publicWeb
-        reason:
-          type: string
-      required:
-      - type
-      - reason
-      type: object
-      additionalProperties: false
-    PaginationApiResource:
-      properties:
-        after:
-          allOf:
-          - $ref: '#/components/schemas/ApiPaginationCursor'
-          nullable: true
-        before:
-          allOf:
-          - $ref: '#/components/schemas/ApiPaginationCursor'
-          nullable: true
-      required:
-      - after
-      - before
-      type: object
-      additionalProperties: false
-    ProjectRunNotificationRecipient:
-      description: 'The recipient of a project run notification, which will include the type of recipient and additional configuration details.
-
-        This is used to determine who to send the notification to, and what triggers would qualify sending the notification.'
-      properties:
-        type:
-          $ref: '#/components/schemas/RunNotificationType'
-        subject:
-          type: string
-        body:
-          type: string
-        recipientType:
-          $ref: '#/components/schemas/NotificationRecipientType'
-        includeSuccessScreenshot:
-          type: boolean
-          description: If true, a screenshot of the project will be included in the notification when the project succeeds.
-        screenshotFormat:
-          items:
-            $ref: '#/components/schemas/ScreenshotFormatType'
-          type: array
-          description: 'The format of the screenshot to be included in the notification.
-
-            Defaults to png only if not specified and includeSuccessScreenshot is true.'
-        recipient:
-          $ref: '#/components/schemas/NotificationRecipient'
-      required:
-      - type
-      - recipientType
-      - includeSuccessScreenshot
-      - recipient
-      type: object
-      additionalProperties: false
-    NextPageUrl:
-      type: string
-      description: URL to fetch the next page of results for a paginated API request
     EnumValues_typeofProjectTypeApiEnum_:
       type: string
       enum:
       - PROJECT
       - COMPONENT
-    ShareProjectWithUserError:
-      properties:
-        userIds:
-          items:
-            $ref: '#/components/schemas/UserId'
-          type: array
-        reason:
-          type: string
-      required:
-      - userIds
-      - reason
-      type: object
-      additionalProperties: false
-    EnumValues_typeofRunTypeFilter_:
+    RunStatusUrl:
       type: string
-      enum:
-      - API
-      - SCHEDULED
-      - APP_REFRESH
-      - ALL
-    AccessLevelEnum:
-      $ref: '#/components/schemas/EnumValues_typeofAccessLevelEnum_'
-      description: 'Access level granted by sharing endpoints.
-
-        For projects, `CAN_VIEW` is the API value that corresponds to the UI permission labeled "Can explore".
-
-        `APP_ONLY` is the API value that corresponds to the UI permission labeled "Can view app".'
-    InvalidParam:
-      properties:
-        dataType:
-          type: string
-          description: The expected data type of the parameter (number, string, etc.), which the input value should have matched
-        inputCellType:
-          type: string
-          description: The cell input type of the parameter (text, slider, etc.)
-        paramValue:
-          type: string
-          description: The JSON-encoded, invalid value for the parameter
-        paramName:
-          type: string
-          description: The name of the parameter for which an invalid value was provided
-      required:
-      - dataType
-      - inputCellType
-      - paramValue
-      - paramName
-      type: object
-      description: Information about an input parameter pass to the API call that could not be parsed.
+      description: URL to query the status of the project run via the Hex API
     GroupId:
       type: string
       format: uuid
       description: Unique ID for a group. This can be found from the groups page (in Settings).
       pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-    ChartImageFromRunResponsePayload:
+    ProjectStatusResponsePayload:
+      description: Response format returned by the getRunStatus endpoint
       properties:
         projectId:
           $ref: '#/components/schemas/ProjectId'
+        projectVersion:
+          $ref: '#/components/schemas/ProjectVersion'
         runId:
-          $ref: '#/components/schemas/InputRunId'
-        staticId:
-          $ref: '#/components/schemas/StaticCellId'
-        imageBase64:
+          $ref: '#/components/schemas/ResponseRunId'
+        runUrl:
+          $ref: '#/components/schemas/RunUrl'
+        status:
+          $ref: '#/components/schemas/ProjectRunStatus'
+        runTrigger:
+          $ref: '#/components/schemas/ProjectStatusRunTrigger'
+          description: 'How the run was triggered: `API`, `SCHEDULED`, or `APP_REFRESH`'
+        startTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: UTC timestamp of when the project run started
+        endTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: UTC timestamp of when the project run finished
+        elapsedTime:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Total elapsed time for the project run in milliseconds
+        flagConfigOverride:
           type: string
-        mimeType:
-          type: string
+        traceId:
+          $ref: '#/components/schemas/TraceId'
+        notifications:
+          items:
+            $ref: '#/components/schemas/ProjectRunNotificationRecipient'
+          type: array
+        stateEvents:
+          items:
+            $ref: '#/components/schemas/StateEvent'
+          type: array
       required:
       - projectId
+      - projectVersion
       - runId
-      - staticId
-      - imageBase64
-      - mimeType
+      - runUrl
+      - status
+      - runTrigger
+      - startTime
+      - endTime
+      - elapsedTime
+      - traceId
       type: object
       additionalProperties: false
     ProjectRunsResponsePayload:
@@ -1195,11 +1279,9 @@ components:
         nextPage:
           allOf:
           - $ref: '#/components/schemas/NextPageUrl'
-          nullable: true
         previousPage:
           allOf:
           - $ref: '#/components/schemas/NextPageUrl'
-          nullable: true
         traceId:
           $ref: '#/components/schemas/TraceId'
       required:
@@ -1209,55 +1291,17 @@ components:
       - traceId
       type: object
       additionalProperties: false
-    SortByEnum:
-      $ref: '#/components/schemas/EnumValues_typeofSortByEnum_'
-    RunUrl:
-      type: string
-      description: URL to view the current progress of the project run in the Hex UI
-    TsoaErrorResponsePayload:
+    PaginationApiResource:
       properties:
-        details:
-          type: string
-        traceId:
-          $ref: '#/components/schemas/TraceId'
-        reason:
-          type: string
+        after:
+          allOf:
+          - $ref: '#/components/schemas/ApiPaginationCursor'
+        before:
+          allOf:
+          - $ref: '#/components/schemas/ApiPaginationCursor'
       required:
-      - reason
-      type: object
-    ProjectRunStatus:
-      description: Current status of a project run
-      enum:
-      - PENDING
-      - RUNNING
-      - ERRORED
-      - COMPLETED
-      - KILLED
-      - UNABLE_TO_ALLOCATE_KERNEL
-      type: string
-    EditProjectSharingUsersResponse:
-      properties:
-        project:
-          $ref: '#/components/schemas/ProjectApiResource'
-        errors:
-          items:
-            $ref: '#/components/schemas/ShareProjectWithUserError'
-          type: array
-      required:
-      - project
-      type: object
-      additionalProperties: false
-    ProjectsListApiResource:
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/ProjectApiResource'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/PaginationApiResource'
-      required:
-      - values
-      - pagination
+      - after
+      - before
       type: object
       additionalProperties: false
     SharingResource:
@@ -1343,8 +1387,139 @@ components:
       - support
       type: object
       additionalProperties: false
-    RunTypeFilter:
-      $ref: '#/components/schemas/EnumValues_typeofRunTypeFilter_'
+    PageSize:
+      type: integer
+      format: int32
+      default: '25'
+      description: Number of results to fetch per page for paginated requests
+      minimum: 1
+      maximum: 100
+    ProjectRunResponsePayload:
+      description: Response format returned by the runProject endpoint
+      properties:
+        projectId:
+          $ref: '#/components/schemas/ProjectId'
+        runId:
+          $ref: '#/components/schemas/ResponseRunId'
+        runUrl:
+          $ref: '#/components/schemas/RunUrl'
+        runStatusUrl:
+          $ref: '#/components/schemas/RunStatusUrl'
+        traceId:
+          $ref: '#/components/schemas/TraceId'
+        projectVersion:
+          $ref: '#/components/schemas/ProjectVersion'
+        notifications:
+          items:
+            $ref: '#/components/schemas/ProjectRunNotificationRecipient'
+          type: array
+      required:
+      - projectId
+      - runId
+      - runUrl
+      - runStatusUrl
+      - traceId
+      - projectVersion
+      type: object
+      additionalProperties: false
+    Timestamp:
+      type: string
+      format: timestamp
+      description: An ISO 8601 timestamp with timezone like 1970-01-01T00:00:00Z.
+    ProjectStatusRunTrigger:
+      type: string
+      enum:
+      - API
+      - SCHEDULED
+      - APP_REFRESH
+      description: How a run of a project was triggered (`API`, `SCHEDULED`, or `APP_REFRESH`)
+    NotFoundParam:
+      type: string
+      description: Name of an input parameter passed to the API call that was not found in the project.
+    StaticCellId:
+      type: string
+      format: uuid
+      description: Unique static ID for a cell. This can be found by going into the menu of a cell in the notebook.
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    ScreenshotFormatType:
+      type: string
+      enum:
+      - png
+      - pdf
+      description: The file format of the generated screenshot.
+    ShareProjectWithUserError:
+      properties:
+        userIds:
+          items:
+            $ref: '#/components/schemas/UserId'
+          type: array
+        reason:
+          type: string
+      required:
+      - userIds
+      - reason
+      type: object
+      additionalProperties: false
+    InvalidParam:
+      properties:
+        dataType:
+          type: string
+          description: The expected data type of the parameter (number, string, etc.), which the input value should have matched
+        inputCellType:
+          type: string
+          description: The cell input type of the parameter (text, slider, etc.)
+        paramValue:
+          type: string
+          description: The JSON-encoded, invalid value for the parameter
+        paramName:
+          type: string
+          description: The name of the parameter for which an invalid value was provided
+      required:
+      - dataType
+      - inputCellType
+      - paramValue
+      - paramName
+      type: object
+      description: Information about an input parameter pass to the API call that could not be parsed.
+    ShareProjectWithWorkspaceError:
+      properties:
+        type:
+          type: string
+          enum:
+          - workspace
+          - publicWeb
+        reason:
+          type: string
+      required:
+      - type
+      - reason
+      type: object
+      additionalProperties: false
+    DayOfWeekApiEnum:
+      $ref: '#/components/schemas/EnumValues_typeofDayOfWeekApiEnum_'
+    InputRunId:
+      type: string
+      format: uuid
+      description: Unique ID for a run of a Hex project. This ID is part of the response returned by the RunProject endpoint. The GetProjectRuns endpoint can also be used to find the specific runs for a project.
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    EditProjectSharingWorkspaceAndPublicResponse:
+      properties:
+        project:
+          $ref: '#/components/schemas/ProjectApiResource'
+        errors:
+          items:
+            $ref: '#/components/schemas/ShareProjectWithWorkspaceError'
+          type: array
+      required:
+      - project
+      type: object
+      additionalProperties: false
+    RunUrl:
+      type: string
+      description: URL to view the current progress of the project run in the Hex UI
+    TimezoneDesignator:
+      type: string
+      description: An ISO 8601 timezone designator like +08:00.
     ProjectApiResource:
       properties:
         id:
@@ -1352,8 +1527,9 @@ components:
         title:
           type: string
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         type:
           $ref: '#/components/schemas/ProjectTypeApiEnum'
         creator:
@@ -1376,14 +1552,16 @@ components:
               type: string
           required:
           - name
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
         categories:
           items:
             properties:
               description:
-                type: string
-                nullable: true
+                type:
+                - string
+                - 'null'
               name:
                 type: string
             required:
@@ -1403,11 +1581,9 @@ components:
             publishedResultsUpdatedAt:
               allOf:
               - $ref: '#/components/schemas/Timestamp'
-              nullable: true
             lastViewedAt:
               allOf:
               - $ref: '#/components/schemas/Timestamp'
-              nullable: true
             appViews:
               properties:
                 lastThirtyDays:
@@ -1438,17 +1614,14 @@ components:
         lastPublishedAt:
           allOf:
           - $ref: '#/components/schemas/Timestamp'
-          nullable: true
         createdAt:
           $ref: '#/components/schemas/Timestamp'
         archivedAt:
           allOf:
           - $ref: '#/components/schemas/Timestamp'
-          nullable: true
         trashedAt:
           allOf:
           - $ref: '#/components/schemas/Timestamp'
-          nullable: true
         schedules:
           items:
             $ref: '#/components/schemas/ScheduleApiResource'
@@ -1474,64 +1647,18 @@ components:
       - schedules
       type: object
       additionalProperties: false
-    EditProjectSharingWorkspaceAndPublicResponse:
+    SortDirectionEnum:
+      $ref: '#/components/schemas/EnumValues_typeofSortDirectionEnum_'
+    EditProjectSharingUsersResponse:
       properties:
         project:
           $ref: '#/components/schemas/ProjectApiResource'
         errors:
           items:
-            $ref: '#/components/schemas/ShareProjectWithWorkspaceError'
+            $ref: '#/components/schemas/ShareProjectWithUserError'
           type: array
       required:
       - project
-      type: object
-      additionalProperties: false
-    RunNotificationType:
-      description: The condition that determines whether or not the notification should be delivered based on these types.
-      enum:
-      - SUCCESS
-      - FAILURE
-      - ALL
-      type: string
-    ApiPaginationCursor:
-      type: string
-      description: 'A cursor string used with `before` and `after` parameters to paginate through a list
-
-        of items on the API.'
-    StateEvent:
-      description: Response format returned by the runProject endpoint
-      properties:
-        type:
-          type: string
-        value:
-          type: string
-        timestamp:
-          type: string
-      required:
-      - type
-      - value
-      - timestamp
-      type: object
-      additionalProperties: false
-    ProjectStatusRunTrigger:
-      type: string
-      enum:
-      - API
-      - SCHEDULED
-      - APP_REFRESH
-      description: How a run of a project was triggered (`API`, `SCHEDULED`, or `APP_REFRESH`)
-    ProjectQueriedTableResource:
-      properties:
-        dataConnectionId:
-          $ref: '#/components/schemas/DataConnectionId'
-        dataConnectionName:
-          type: string
-        tableName:
-          type: string
-      required:
-      - dataConnectionId
-      - dataConnectionName
-      - tableName
       type: object
       additionalProperties: false
     NotificationRecipientType:
@@ -1541,358 +1668,26 @@ components:
       - GROUP
       - SLACK_CHANNEL
       type: string
-    ProjectVersion:
-      type: integer
-      format: int32
-      description: The version of the Hex project that was run. Project versions are ordered, starting at 1 and incrementing on each saved version. Project versions can be found in the History & Versions side bar of the Logic View.
-    EnumValues_typeofAccessLevelEnum_:
-      type: string
-      enum:
-      - NONE
-      - APP_ONLY
-      - CAN_VIEW
-      - CAN_EDIT
-      - FULL_ACCESS
-    InputRunId:
-      type: string
-      format: uuid
-      description: Unique ID for a run of a Hex project. This ID is part of the response returned by the RunProject endpoint. The GetProjectRuns endpoint can also be used to find the specific runs for a project.
-      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-    InvalidParamPayload:
-      properties:
-        traceId:
-          $ref: '#/components/schemas/TraceId'
-        invalid:
-          items:
-            $ref: '#/components/schemas/InvalidParam'
-          type: array
-          description: Array of specified input parameters that were invalid or could not be parsed
-        notFound:
-          items:
-            $ref: '#/components/schemas/NotFoundParam'
-          type: array
-          description: Array of specified input parameter names that were not found in the project
-      required:
-      - traceId
-      - invalid
-      - notFound
-      type: object
-    SortDirectionEnum:
-      $ref: '#/components/schemas/EnumValues_typeofSortDirectionEnum_'
-    CollectionId:
-      type: string
-      format: uuid
-      description: Unique ID for a collection.
-      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-    ProjectTypeApiEnum:
-      $ref: '#/components/schemas/EnumValues_typeofProjectTypeApiEnum_'
-      description: The type of the ProjectApiResource being returned.
-    Offset:
-      type: integer
-      format: int32
-      default: '0'
-      description: Offset for paginated requests
-      minimum: 0
-    ScheduleCadenceApiEnum:
-      $ref: '#/components/schemas/EnumValues_typeofScheduleCadenceApiEnum_'
-      description: Types of cadence of a schedule for a Hex project.
-    ProjectRunResponsePayload:
-      description: Response format returned by the runProject endpoint
-      properties:
-        projectId:
-          $ref: '#/components/schemas/ProjectId'
-        runId:
-          $ref: '#/components/schemas/ResponseRunId'
-        runUrl:
-          $ref: '#/components/schemas/RunUrl'
-        runStatusUrl:
-          $ref: '#/components/schemas/RunStatusUrl'
-        traceId:
-          $ref: '#/components/schemas/TraceId'
-        projectVersion:
-          $ref: '#/components/schemas/ProjectVersion'
-        notifications:
-          items:
-            $ref: '#/components/schemas/ProjectRunNotificationRecipient'
-          type: array
-      required:
-      - projectId
-      - runId
-      - runUrl
-      - runStatusUrl
-      - traceId
-      - projectVersion
-      type: object
-      additionalProperties: false
-    ScheduleApiResource:
-      properties:
-        cadence:
-          $ref: '#/components/schemas/ScheduleCadenceApiEnum'
-        enabled:
-          type: boolean
-        hourly:
-          properties:
-            timezone:
-              $ref: '#/components/schemas/TimezoneDesignator'
-            minute:
-              type: integer
-              format: int32
-              minimum: 0
-              maximum: 59
-          required:
-          - timezone
-          - minute
-          type: object
-          nullable: true
-        daily:
-          properties:
-            timezone:
-              $ref: '#/components/schemas/TimezoneDesignator'
-            minute:
-              type: integer
-              format: int32
-              minimum: 0
-              maximum: 59
-            hour:
-              type: integer
-              format: int32
-              minimum: 0
-              maximum: 23
-          required:
-          - timezone
-          - minute
-          - hour
-          type: object
-          nullable: true
-        weekly:
-          properties:
-            timezone:
-              $ref: '#/components/schemas/TimezoneDesignator'
-            minute:
-              type: integer
-              format: int32
-              minimum: 0
-              maximum: 59
-            hour:
-              type: integer
-              format: int32
-              minimum: 0
-              maximum: 23
-            dayOfWeek:
-              $ref: '#/components/schemas/DayOfWeekApiEnum'
-          required:
-          - timezone
-          - minute
-          - hour
-          - dayOfWeek
-          type: object
-          nullable: true
-        monthly:
-          properties:
-            timezone:
-              $ref: '#/components/schemas/TimezoneDesignator'
-            minute:
-              type: integer
-              format: int32
-              minimum: 0
-              maximum: 59
-            hour:
-              type: integer
-              format: int32
-              minimum: 0
-              maximum: 23
-            day:
-              type: integer
-              format: int32
-              minimum: 1
-              maximum: 28
-          required:
-          - timezone
-          - minute
-          - hour
-          - day
-          type: object
-          nullable: true
-        custom:
-          properties:
-            timezone:
-              $ref: '#/components/schemas/TimezoneDesignator'
-            cron:
-              type: string
-          required:
-          - timezone
-          - cron
-          type: object
-          nullable: true
-      required:
-      - cadence
-      - enabled
-      - hourly
-      - daily
-      - weekly
-      - monthly
-      - custom
-      type: object
-      additionalProperties: false
-    Timestamp:
-      type: string
-      format: timestamp
-      description: An ISO 8601 timestamp with timezone like 1970-01-01T00:00:00Z.
-    EditProjectSharingGroupsResponse:
-      properties:
-        project:
-          $ref: '#/components/schemas/ProjectApiResource'
-        errors:
-          items:
-            $ref: '#/components/schemas/ShareProjectWithGroupError'
-          type: array
-      required:
-      - project
-      type: object
-      additionalProperties: false
     PublicWebAccessLevel:
       $ref: '#/components/schemas/EnumValues_typeofAccessLevelEnum_'
-    ProjectStatusResponsePayload:
-      description: Response format returned by the getRunStatus endpoint
+    ChartImageFromRunResponsePayload:
       properties:
         projectId:
           $ref: '#/components/schemas/ProjectId'
-        projectVersion:
-          $ref: '#/components/schemas/ProjectVersion'
         runId:
-          $ref: '#/components/schemas/ResponseRunId'
-        runUrl:
-          $ref: '#/components/schemas/RunUrl'
-        status:
-          $ref: '#/components/schemas/ProjectRunStatus'
-        runTrigger:
-          $ref: '#/components/schemas/ProjectStatusRunTrigger'
-          description: 'How the run was triggered: `API`, `SCHEDULED`, or `APP_REFRESH`'
-        startTime:
+          $ref: '#/components/schemas/InputRunId'
+        staticId:
+          $ref: '#/components/schemas/StaticCellId'
+        imageBase64:
           type: string
-          format: date-time
-          nullable: true
-          description: UTC timestamp of when the project run started
-        endTime:
+        mimeType:
           type: string
-          format: date-time
-          nullable: true
-          description: UTC timestamp of when the project run finished
-        elapsedTime:
-          type: number
-          format: double
-          nullable: true
-          description: Total elapsed time for the project run in milliseconds
-        flagConfigOverride:
-          type: string
-        traceId:
-          $ref: '#/components/schemas/TraceId'
-        notifications:
-          items:
-            $ref: '#/components/schemas/ProjectRunNotificationRecipient'
-          type: array
-        stateEvents:
-          items:
-            $ref: '#/components/schemas/StateEvent'
-          type: array
       required:
       - projectId
-      - projectVersion
       - runId
-      - runUrl
-      - status
-      - runTrigger
-      - startTime
-      - endTime
-      - elapsedTime
-      - traceId
-      type: object
-      additionalProperties: false
-    ShareProjectWithCollectionError:
-      properties:
-        collectionIds:
-          items:
-            $ref: '#/components/schemas/CollectionId'
-          type: array
-        reason:
-          type: string
-      required:
-      - collectionIds
-      - reason
-      type: object
-      additionalProperties: false
-    RunProjectRequestBody:
-      description: Request body format for triggering a project run
-      properties:
-        inputParams:
-          properties: {}
-          additionalProperties: {}
-          type: object
-          description: 'Optionally specify input parameters for this project run.
-
-            These should be structured as a dictionary of key/value pairs, where the key name matches the name of the variable in the Hex project.
-
-
-            Only parameters that are added to the published app can be set via this request parameter. Any additional inputs will be ignored.
-
-            It is invalid to pass in both a viewId and inputParams.
-
-
-            If no input parameters are provided, the project will be run with the default input values.
-
-            Note that if input parameters are provided, this run will not be able to update the cached values for the project, and the updateCache setting (below) will be ignored.'
-          example:
-            text_input_1: Hello World
-            numeric_input_1: 123
-        dryRun:
-          type: boolean
-          description: When true, this endpoint will perform a dry run that does not run the project. This can be useful for validating the structure of an API call, and inspecting a dummy response, without running a project.
-          default: 'false'
-        updateCache:
-          type: boolean
-          deprecated: true
-        notifications:
-          items:
-            $ref: '#/components/schemas/ProjectRunNotification'
-          type: array
-          description: 'Optionally specify a list of notification details that will be delivered once a project run completes.
-
-            Notifications can be configured for delivery to Slack channels, Hex users, or Hex groups.'
-          example:
-          - type: ALL
-            includeSuccessScreenshot: 'true'
-            slackChannelIds:
-            - C0000000
-            userIds:
-            - uuid-user-1
-            - uuid-user-2
-          - type: FAILURE
-            includeSuccessScreenshot: 'false'
-            userIds:
-            - uuid-user-1
-            groupIds:
-            - uuid-group-1
-        updatePublishedResults:
-          type: boolean
-          description: 'When true, the cached state of the published app will be updated with the latest
-
-            run results. You must have at least "Can Edit" permissions on the project to do so.
-
-            Note: this cannot be set to true if custom input parameters are provided.'
-          default: 'false'
-        useCachedSqlResults:
-          type: boolean
-          description: 'When false, the project will run without using any cached SQL results, and will
-
-            update those cached SQL results.'
-          default: 'true'
-        viewId:
-          type: string
-          description: 'Optionally specify a SavedView viewId to use for the project run. If specified, the saved view''s inputs will be used for the project run.
-
-            It is invalid to pass in both a viewId and inputParams.
-
-            If not specified, the default inputs will be used.'
+      - staticId
+      - imageBase64
+      - mimeType
       type: object
       additionalProperties: false
     ProjectRunNotification:
@@ -1938,28 +1733,264 @@ components:
       - includeSuccessScreenshot
       type: object
       additionalProperties: false
-    PageSize:
-      type: integer
-      format: int32
-      default: '25'
-      description: Number of results to fetch per page for paginated requests
-      minimum: 1
-      maximum: 100
     ProjectId:
       type: string
       format: uuid
       description: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after `hex` in the URL.
       pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-    EditProjectSharingCollectionsResponse:
+    ProjectVersion:
+      type: integer
+      format: int32
+      description: The version of the Hex project that was run. Project versions are ordered, starting at 1 and incrementing on each saved version. Project versions can be found in the History & Versions side bar of the Logic View.
+    ProjectTypeApiEnum:
+      $ref: '#/components/schemas/EnumValues_typeofProjectTypeApiEnum_'
+      description: The type of the ProjectApiResource being returned.
+    EditProjectSharingGroupsResponse:
       properties:
         project:
           $ref: '#/components/schemas/ProjectApiResource'
         errors:
           items:
-            $ref: '#/components/schemas/ShareProjectWithCollectionError'
+            $ref: '#/components/schemas/ShareProjectWithGroupError'
           type: array
       required:
       - project
+      type: object
+      additionalProperties: false
+    EnumValues_typeofSortByEnum_:
+      type: string
+      enum:
+      - CREATED_AT
+      - LAST_EDITED_AT
+      - LAST_PUBLISHED_AT
+    ProjectRunStatus:
+      description: Current status of a project run
+      enum:
+      - PENDING
+      - RUNNING
+      - ERRORED
+      - COMPLETED
+      - KILLED
+      - UNABLE_TO_ALLOCATE_KERNEL
+      type: string
+    EnumValues_typeofScheduleCadenceApiEnum_:
+      type: string
+      enum:
+      - HOURLY
+      - DAILY
+      - WEEKLY
+      - MONTHLY
+      - CUSTOM
+    ShareProjectWithGroupError:
+      properties:
+        groupIds:
+          items:
+            $ref: '#/components/schemas/GroupId'
+          type: array
+        reason:
+          type: string
+      required:
+      - groupIds
+      - reason
+      type: object
+      additionalProperties: false
+    SortByEnum:
+      $ref: '#/components/schemas/EnumValues_typeofSortByEnum_'
+    ResponseRunId:
+      type: string
+      format: uuid
+      description: Unique ID for a run of a Hex project
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    CollectionId:
+      type: string
+      format: uuid
+      description: Unique ID for a collection.
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    ScheduleApiResource:
+      properties:
+        cadence:
+          $ref: '#/components/schemas/ScheduleCadenceApiEnum'
+        enabled:
+          type: boolean
+        hourly:
+          properties:
+            timezone:
+              $ref: '#/components/schemas/TimezoneDesignator'
+            minute:
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 59
+          required:
+          - timezone
+          - minute
+          type:
+          - object
+          - 'null'
+        daily:
+          properties:
+            timezone:
+              $ref: '#/components/schemas/TimezoneDesignator'
+            minute:
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 59
+            hour:
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 23
+          required:
+          - timezone
+          - minute
+          - hour
+          type:
+          - object
+          - 'null'
+        weekly:
+          properties:
+            timezone:
+              $ref: '#/components/schemas/TimezoneDesignator'
+            minute:
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 59
+            hour:
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 23
+            dayOfWeek:
+              $ref: '#/components/schemas/DayOfWeekApiEnum'
+          required:
+          - timezone
+          - minute
+          - hour
+          - dayOfWeek
+          type:
+          - object
+          - 'null'
+        monthly:
+          properties:
+            timezone:
+              $ref: '#/components/schemas/TimezoneDesignator'
+            minute:
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 59
+            hour:
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 23
+            day:
+              type: integer
+              format: int32
+              minimum: 1
+              maximum: 28
+          required:
+          - timezone
+          - minute
+          - hour
+          - day
+          type:
+          - object
+          - 'null'
+        custom:
+          properties:
+            timezone:
+              $ref: '#/components/schemas/TimezoneDesignator'
+            cron:
+              type: string
+          required:
+          - timezone
+          - cron
+          type:
+          - object
+          - 'null'
+      required:
+      - cadence
+      - enabled
+      - hourly
+      - daily
+      - weekly
+      - monthly
+      - custom
+      type: object
+      additionalProperties: false
+    ScheduleCadenceApiEnum:
+      $ref: '#/components/schemas/EnumValues_typeofScheduleCadenceApiEnum_'
+      description: Types of cadence of a schedule for a Hex project.
+    ProjectQueriedTablesApiResource:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/ProjectQueriedTableResource'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/PaginationApiResource'
+        traceId:
+          type: string
+      required:
+      - values
+      - pagination
+      - traceId
+      type: object
+      additionalProperties: false
+    RunTypeFilter:
+      $ref: '#/components/schemas/EnumValues_typeofRunTypeFilter_'
+    ProjectsListApiResource:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/ProjectApiResource'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/PaginationApiResource'
+      required:
+      - values
+      - pagination
+      type: object
+      additionalProperties: false
+    Offset:
+      type: integer
+      format: int32
+      default: '0'
+      description: Offset for paginated requests
+      minimum: 0
+    ProjectRunNotificationRecipient:
+      description: 'The recipient of a project run notification, which will include the type of recipient and additional configuration details.
+
+        This is used to determine who to send the notification to, and what triggers would qualify sending the notification.'
+      properties:
+        type:
+          $ref: '#/components/schemas/RunNotificationType'
+        subject:
+          type: string
+        body:
+          type: string
+        recipientType:
+          $ref: '#/components/schemas/NotificationRecipientType'
+        includeSuccessScreenshot:
+          type: boolean
+          description: If true, a screenshot of the project will be included in the notification when the project succeeds.
+        screenshotFormat:
+          items:
+            $ref: '#/components/schemas/ScreenshotFormatType'
+          type: array
+          description: 'The format of the screenshot to be included in the notification.
+
+            Defaults to png only if not specified and includeSuccessScreenshot is true.'
+        recipient:
+          $ref: '#/components/schemas/NotificationRecipient'
+      required:
+      - type
+      - recipientType
+      - includeSuccessScreenshot
+      - recipient
       type: object
       additionalProperties: false
   securitySchemes:
